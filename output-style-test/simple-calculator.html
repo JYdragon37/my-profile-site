@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>심플 계산기</title>
+    <style>
+        /* 페이지 전체 설정 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #1a1a2e;
+        }
+
+        /* 계산기 본체 */
+        .calculator {
+            background: #16213e;
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            width: 350px;
+        }
+
+        /* 디스플레이 화면 */
+        .display {
+            background: #0f3460;
+            color: #00d9ff;
+            font-size: 36px;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: right;
+            margin-bottom: 20px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            font-weight: 300;
+            letter-spacing: 1px;
+            overflow-x: auto;
+        }
+
+        /* 버튼 영역 */
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        /* 모든 버튼 기본 스타일 */
+        button {
+            padding: 25px;
+            font-size: 20px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        /* 버튼 호버 효과 */
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 버튼 클릭 효과 */
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* 숫자 버튼 (파란색 계열) */
+        .number {
+            background: #533483;
+            color: white;
+        }
+
+        .number:hover {
+            background: #6a41a1;
+        }
+
+        /* 연산자 버튼 (주황색 계열) */
+        .operator {
+            background: #e94560;
+            color: white;
+        }
+
+        .operator:hover {
+            background: #ff577f;
+        }
+
+        /* 기능 버튼 (회색 계열) */
+        .function {
+            background: #2d4059;
+            color: white;
+        }
+
+        .function:hover {
+            background: #3d5270;
+        }
+
+        /* 등호 버튼 (초록색 - 강조) */
+        .equals {
+            background: #00adb5;
+            color: white;
+            grid-column: span 2;
+        }
+
+        .equals:hover {
+            background: #00c9d1;
+        }
+
+        /* 0 버튼을 2칸 차지하게 */
+        .zero {
+            grid-column: span 2;
+        }
+
+        /* 제목 */
+        .title {
+            text-align: center;
+            color: #00d9ff;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="title">CALCULATOR</div>
+
+        <!-- 계산 결과 표시 화면 -->
+        <div class="display" id="display">0</div>
+
+        <!-- 버튼 그리드 -->
+        <div class="buttons">
+            <!-- 첫 번째 줄: 기능 버튼들 -->
+            <button class="function" onclick="clearAll()">AC</button>
+            <button class="function" onclick="deleteOne()">DEL</button>
+            <button class="operator" onclick="addOperator('%')">%</button>
+            <button class="operator" onclick="addOperator('/')">÷</button>
+
+            <!-- 숫자와 연산자 -->
+            <button class="number" onclick="addNumber('7')">7</button>
+            <button class="number" onclick="addNumber('8')">8</button>
+            <button class="number" onclick="addNumber('9')">9</button>
+            <button class="operator" onclick="addOperator('*')">×</button>
+
+            <button class="number" onclick="addNumber('4')">4</button>
+            <button class="number" onclick="addNumber('5')">5</button>
+            <button class="number" onclick="addNumber('6')">6</button>
+            <button class="operator" onclick="addOperator('-')">-</button>
+
+            <button class="number" onclick="addNumber('1')">1</button>
+            <button class="number" onclick="addNumber('2')">2</button>
+            <button class="number" onclick="addNumber('3')">3</button>
+            <button class="operator" onclick="addOperator('+')">+</button>
+
+            <!-- 마지막 줄 -->
+            <button class="number zero" onclick="addNumber('0')">0</button>
+            <button class="number" onclick="addNumber('.')">.</button>
+            <button class="equals" onclick="calculate()">=</button>
+        </div>
+    </div>
+
+    <script>
+        // 화면에 표시되는 값을 저장하는 변수
+        let displayValue = '0';
+        // 마지막에 입력한 것이 연산자인지 체크
+        let lastInputWasOperator = false;
+
+        // 숫자를 추가하는 함수
+        function addNumber(num) {
+            // 처음 입력이거나 '0'만 있을 때
+            if (displayValue === '0') {
+                displayValue = num;
+            } else {
+                // 기존 값에 숫자 추가
+                displayValue += num;
+            }
+            lastInputWasOperator = false;
+            updateDisplay();
+        }
+
+        // 연산자를 추가하는 함수
+        function addOperator(operator) {
+            // 연속으로 연산자를 입력하는 것을 방지
+            if (!lastInputWasOperator) {
+                displayValue += operator;
+                lastInputWasOperator = true;
+                updateDisplay();
+            }
+        }
+
+        // 화면 업데이트 함수
+        function updateDisplay() {
+            // displayValue의 값을 화면에 표시
+            document.getElementById('display').textContent = displayValue;
+        }
+
+        // 전체 삭제 (AC 버튼)
+        function clearAll() {
+            displayValue = '0';
+            lastInputWasOperator = false;
+            updateDisplay();
+        }
+
+        // 한 글자 삭제 (DEL 버튼)
+        function deleteOne() {
+            if (displayValue.length > 1) {
+                // 마지막 글자가 연산자였는지 확인
+                const lastChar = displayValue[displayValue.length - 1];
+                if (['+', '-', '*', '/', '%'].includes(lastChar)) {
+                    lastInputWasOperator = false;
+                }
+                // 마지막 글자 제거
+                displayValue = displayValue.slice(0, -1);
+            } else {
+                // 한 글자만 남았으면 0으로 초기화
+                displayValue = '0';
+                lastInputWasOperator = false;
+            }
+            updateDisplay();
+        }
+
+        // 계산 실행 (= 버튼)
+        function calculate() {
+            try {
+                // 수식 계산
+                // 곱하기와 나누기 기호를 JavaScript가 이해할 수 있게 변환
+                let expression = displayValue
+                    .replace(/×/g, '*')
+                    .replace(/÷/g, '/');
+
+                // 계산 실행
+                let result = eval(expression);
+
+                // 결과가 소수인 경우 자릿수 제한
+                if (!Number.isInteger(result)) {
+                    result = parseFloat(result.toFixed(8));
+                }
+
+                displayValue = String(result);
+                lastInputWasOperator = false;
+                updateDisplay();
+            } catch (error) {
+                // 오류 발생 시 에러 메시지 표시
+                displayValue = 'Error';
+                updateDisplay();
+
+                // 1.5초 후 자동으로 초기화
+                setTimeout(() => {
+                    clearAll();
+                }, 1500);
+            }
+        }
+
+        // 키보드 입력 지원 (보너스 기능!)
+        document.addEventListener('keydown', function(event) {
+            // 숫자 키
+            if (event.key >= '0' && event.key <= '9') {
+                addNumber(event.key);
+            }
+            // 연산자 키
+            else if (event.key === '+') addOperator('+');
+            else if (event.key === '-') addOperator('-');
+            else if (event.key === '*') addOperator('*');
+            else if (event.key === '/') {
+                event.preventDefault(); // 브라우저의 기본 검색 기능 방지
+                addOperator('/');
+            }
+            else if (event.key === '%') addOperator('%');
+            else if (event.key === '.') addNumber('.');
+            // Enter 또는 = 키로 계산
+            else if (event.key === 'Enter' || event.key === '=') {
+                event.preventDefault();
+                calculate();
+            }
+            // Backspace로 삭제
+            else if (event.key === 'Backspace') {
+                event.preventDefault();
+                deleteOne();
+            }
+            // Escape로 전체 삭제
+            else if (event.key === 'Escape') {
+                clearAll();
+            }
+        });
+    </script>
+</body>
+</html>

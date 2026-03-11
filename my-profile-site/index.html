@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="JY - IT Consultant | AI, ML, Full-stack Development">
+    <meta name="keywords" content="IT Consultant, AI, Machine Learning, Deep Learning, Full-stack">
+    <meta name="author" content="JY">
+    <meta property="og:title" content="JY - IT Consultant">
+    <meta property="og:description" content="최고의 IT, AI, ML 컨설팅 | Best IT, AI, ML Consulting">
+
+    <title>JY - IT Consultant</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 navbar">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <a href="#" class="text-2xl font-bold logo-text">JY</a>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#about" class="nav-link">About</a>
+                    <a href="#projects" class="nav-link">Projects</a>
+                    <a href="#contact" class="nav-link">Contact</a>
+                </div>
+
+                <!-- Theme Toggle -->
+                <div class="flex items-center space-x-4">
+                    <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle theme">
+                        <svg class="sun-icon w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v2a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 1.78a1 1 0 011.415 0l1.414 1.414a1 1 0 01-1.414 1.415l-1.414-1.415a1 1 0 010-1.414zm2.828 2.828a1 1 0 011.415 0l1.414 1.414a1 1 0 01-1.414 1.415l-1.414-1.414a1 1 0 010-1.414zm1.78 4.22a1 1 0 110 2h-2a1 1 0 110-2h2zm-1.78 4.22a1 1 0 011.414 1.415l-1.414 1.414a1 1 0 01-1.415-1.414l1.415-1.414zM10 14a1 1 0 011 1v2a1 1 0 11-2 0v-2a1 1 0 011-1zm-4.22-1.78a1 1 0 011.415 0l1.414 1.414a1 1 0 01-1.414 1.415l-1.414-1.414a1 1 0 010-1.414zM2.92 5.22a1 1 0 011.414 0l1.414 1.414a1 1 0 01-1.414 1.415L2.92 6.636a1 1 0 010-1.414zM2 10a1 1 0 110-2h2a1 1 0 110 2H2zm1.78 4.22a1 1 0 011.414 1.415L3.414 16.05a1 1 0 01-1.415-1.414l1.415-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                        <svg class="moon-icon w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+                        </svg>
+                    </button>
+
+                    <!-- Mobile Menu Toggle -->
+                    <button id="mobileMenuToggle" class="md:hidden mobile-menu-toggle" aria-label="Toggle menu">
+                        <svg class="menu-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                        <svg class="close-icon w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="mobile-menu hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#about" class="block px-3 py-2 mobile-nav-link">About</a>
+                <a href="#projects" class="block px-3 py-2 mobile-nav-link">Projects</a>
+                <a href="#contact" class="block px-3 py-2 mobile-nav-link">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section pt-32 pb-20 sm:pt-40 sm:pb-32" style="background-image: url('https://picsum.photos/1200/600?random=100'); background-attachment: fixed; background-position: center;">
+        <div class="hero-overlay"></div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 fade-in" style="font-family: 'Playfair Display', serif;">JY</h1>
+            <p class="text-xl sm:text-2xl font-medium mb-4 subtitle-text fade-in" style="animation-delay: 0.1s;">IT Consultant</p>
+            <p class="text-lg sm:text-xl mb-8 description-text fade-in" style="animation-delay: 0.2s;">최고의 IT, AI, ML 컨설팅<br><span class="text-sm sm:text-base">Best IT, AI, ML Consulting</span></p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4 fade-in" style="animation-delay: 0.3s;">
+                <a href="#projects" class="cta-button-primary">View Projects</a>
+                <a href="#contact" class="cta-button-secondary">Get in Touch</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section py-20 sm:py-32">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl sm:text-5xl font-bold mb-12 section-title fade-in">About Me</h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-16 items-center">
+                <div class="fade-in">
+                    <p class="text-base sm:text-lg leading-relaxed mb-6 text-content">
+                        I'm an IT consultant with expertise in cutting-edge technologies including AI, Machine Learning, and Deep Learning. With a passion for solving complex problems through technology, I help organizations leverage the power of data and intelligent systems to drive business transformation.
+                    </p>
+                    <p class="text-base sm:text-lg leading-relaxed text-content">
+                        My approach combines deep technical knowledge with strategic consulting insights, ensuring solutions that are both innovative and practical for real-world applications.
+                    </p>
+                </div>
+
+                <div class="fade-in about-image-container">
+                    <img src="https://picsum.photos/400/500?random=99" alt="Professional Profile" class="about-profile-image">
+                </div>
+
+                <div class="fade-in">
+                    <p class="text-base sm:text-lg leading-relaxed mb-6 text-content">
+                        전략적 IT 컨설팅과 고급 기술을 접목하여 조직의 디지털 혁신을 지원합니다. 데이터 기반의 의사결정과 AI/ML 솔루션을 통해 비즈니스 가치를 극대화하는 것이 목표입니다.
+                    </p>
+                    <p class="text-base sm:text-lg leading-relaxed text-content">
+                        복잡한 기술 문제를 전략적으로 해결하고, 비즈니스와 기술의 접점에서 최적의 솔루션을 제시합니다.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Tech Stack -->
+            <div>
+                <h3 class="text-2xl sm:text-3xl font-bold mb-8 section-subtitle fade-in">Tech Stack & Expertise</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- ML Card -->
+                    <div class="tech-card fade-in" style="animation-delay: 0.1s;">
+                        <div class="tech-icon">🤖</div>
+                        <h4 class="text-xl font-semibold mb-2">Machine Learning</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Advanced algorithms and predictive modeling</p>
+                    </div>
+
+                    <!-- DL Card -->
+                    <div class="tech-card fade-in" style="animation-delay: 0.2s;">
+                        <div class="tech-icon">🧠</div>
+                        <h4 class="text-xl font-semibold mb-2">Deep Learning</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Neural networks and AI model development</p>
+                    </div>
+
+                    <!-- Full-stack Card -->
+                    <div class="tech-card fade-in" style="animation-delay: 0.3s;">
+                        <div class="tech-icon">💻</div>
+                        <h4 class="text-xl font-semibold mb-2">Full-stack Development</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">End-to-end web and application solutions</p>
+                    </div>
+
+                    <!-- Private Consulting Card -->
+                    <div class="tech-card fade-in" style="animation-delay: 0.4s;">
+                        <div class="tech-icon">📊</div>
+                        <h4 class="text-xl font-semibold mb-2">Private Consulting</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Strategic advisory and implementation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects-section py-20 sm:py-32">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl sm:text-5xl font-bold mb-12 section-title fade-in">Projects & Portfolio</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project Card 1 -->
+                <article class="project-card fade-in">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=300&fit=crop&auto=format&q=80" alt="AI Analytics" class="project-card-img">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="text-xl font-bold mb-2">AI-Powered Analytics Platform</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                            Enterprise-level analytics system leveraging machine learning for real-time insights and predictive analysis.
+                        </p>
+                        <div class="tech-tags">
+                            <span>Python</span>
+                            <span>TensorFlow</span>
+                            <span>React</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project Card 2 -->
+                <article class="project-card fade-in" style="animation-delay: 0.1s;">
+                    <div class="project-image">
+                        <img src="https://picsum.photos/500/300?random=2" alt="Deep Learning" class="project-card-img">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="text-xl font-bold mb-2">Deep Learning Model Optimization</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                            Optimized neural network architectures for improved performance and reduced inference time.
+                        </p>
+                        <div class="tech-tags">
+                            <span>PyTorch</span>
+                            <span>CUDA</span>
+                            <span>Optimization</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project Card 3 -->
+                <article class="project-card fade-in" style="animation-delay: 0.2s;">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&h=300&fit=crop&auto=format&q=80" alt="Full-stack SaaS" class="project-card-img">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="text-xl font-bold mb-2">Full-stack SaaS Solution</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                            Complete cloud-based application with microservices architecture and modern frontend framework.
+                        </p>
+                        <div class="tech-tags">
+                            <span>Node.js</span>
+                            <span>Docker</span>
+                            <span>Vue.js</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project Card 4 -->
+                <article class="project-card fade-in" style="animation-delay: 0.3s;">
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=500&h=300&fit=crop&auto=format&q=80" alt="Data Pipeline" class="project-card-img">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="text-xl font-bold mb-2">Data Pipeline Architecture</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                            Scalable data processing pipeline handling terabytes of data with real-time processing capabilities.
+                        </p>
+                        <div class="tech-tags">
+                            <span>Apache Spark</span>
+                            <span>Kafka</span>
+                            <span>AWS</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project Card 5 -->
+                <article class="project-card fade-in" style="animation-delay: 0.4s;">
+                    <div class="project-image">
+                        <img src="https://picsum.photos/500/300?random=5" alt="Computer Vision" class="project-card-img">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="text-xl font-bold mb-2">Computer Vision Application</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                            Advanced image recognition and object detection system for real-world applications.
+                        </p>
+                        <div class="tech-tags">
+                            <span>OpenCV</span>
+                            <span>YOLO</span>
+                            <span>CNN</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project Card 6 -->
+                <article class="project-card fade-in" style="animation-delay: 0.5s;">
+                    <div class="project-image">
+                        <img src="https://picsum.photos/500/300?random=6" alt="BI Platform" class="project-card-img">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="text-xl font-bold mb-2">Business Intelligence Platform</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                            Comprehensive BI solution with interactive dashboards and advanced reporting capabilities.
+                        </p>
+                        <div class="tech-tags">
+                            <span>Tableau</span>
+                            <span>SQL</span>
+                            <span>Python</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section py-20 sm:py-32" style="background-image: url('https://picsum.photos/1200/600?random=101'); background-attachment: fixed; background-position: center; background-size: cover;">
+        <div class="contact-overlay"></div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <h2 class="text-4xl sm:text-5xl font-bold mb-8 section-title fade-in">Get In Touch</h2>
+            <p class="text-lg sm:text-xl mb-12 text-content fade-in">
+                I'm always interested in hearing about new projects and opportunities. Feel free to reach out!
+            </p>
+
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-8 fade-in">
+                <a href="mailto:IT-gorilla-KR@gmail.com" class="contact-link">
+                    <span class="icon">✉️</span>
+                    <span class="ml-2">IT-gorilla-KR@gmail.com</span>
+                </a>
+            </div>
+
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-8 fade-in" style="animation-delay: 0.1s;">
+                Click the email to copy it to your clipboard
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer py-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col sm:flex-row justify-between items-center">
+                <p class="text-sm footer-text mb-4 sm:mb-0">
+                    &copy; 2024 JY. All rights reserved.
+                </p>
+                <button id="backToTop" class="back-to-top hidden">
+                    <span>↑</span>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

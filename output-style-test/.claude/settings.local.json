@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(open calculator.html)",
+      "Bash(open:*)",
+      "Bash(ls:*)",
+      "Bash(git config:*)"
+    ]
+  },
+  "outputStyle": "Advanced Developer"
+}

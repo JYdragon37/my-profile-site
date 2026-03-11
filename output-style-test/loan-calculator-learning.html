@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>부동산 대출 계산기 (학습용)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .calculator-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .input-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .label-description {
+            font-size: 12px;
+            color: #666;
+            font-weight: normal;
+            margin-top: 2px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="number"] {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .unit {
+            color: #666;
+            font-weight: 500;
+            min-width: 40px;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 25px;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .calculate-btn:active {
+            transform: translateY(0);
+        }
+
+        .result-section {
+            display: none;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px;
+            border-radius: 15px;
+            color: white;
+        }
+
+        .result-section.show {
+            display: block;
+        }
+
+        .result-title {
+            font-size: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+            opacity: 0.9;
+        }
+
+        .result-item {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .result-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .result-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .result-value {
+            font-size: 26px;
+            font-weight: 700;
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
+        }
+
+        .result-unit {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .info-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .info-box h3 {
+            color: #856404;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .info-box p {
+            color: #856404;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <h1>🏠 부동산 대출 계산기</h1>
+        <p class="subtitle">학습용 버전 - 핵심 로직을 직접 구현해보세요!</p>
+
+        <div class="input-section">
+            <div class="input-group">
+                <label>
+                    대출 금액
+                    <div class="label-description">은행에서 빌리는 돈</div>
+                </label>
+                <div class="input-wrapper">
+                    <input type="number" id="loanAmount" placeholder="예: 300000000" value="300000000" min="0" step="1000000">
+                    <span class="unit">원</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>
+                    연 이자율
+                    <div class="label-description">은행에서 정한 1년 이자율 (예: 3.5%)</div>
+                </label>
+                <div class="input-wrapper">
+                    <input type="number" id="interestRate" placeholder="예: 3.5" value="3.5" min="0" max="20" step="0.1">
+                    <span class="unit">%</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>
+                    대출 기간
+                    <div class="label-description">돈을 갚는 기간 (보통 20~30년)</div>
+                </label>
+                <div class="input-wrapper">
+                    <input type="number" id="loanTerm" placeholder="예: 30" value="30" min="1" max="50">
+                    <span class="unit">년</span>
+                </div>
+            </div>
+        </div>
+
+        <button class="calculate-btn" onclick="calculateLoan()">💰 대출 상환금 계산하기</button>
+
+        <div class="result-section" id="resultSection">
+            <div class="result-title">📊 계산 결과</div>
+
+            <div class="result-item">
+                <div class="result-label">💳 매달 갚아야 할 금액</div>
+                <div class="result-value">
+                    <span id="monthlyPayment">0</span>
+                    <span class="result-unit">원</span>
+                </div>
+            </div>
+
+            <div class="result-item">
+                <div class="result-label">💵 총 상환 금액 (원금 + 이자)</div>
+                <div class="result-value">
+                    <span id="totalPayment">0</span>
+                    <span class="result-unit">원</span>
+                </div>
+            </div>
+
+            <div class="result-item">
+                <div class="result-label">📈 은행에 내는 총 이자</div>
+                <div class="result-value">
+                    <span id="totalInterest">0</span>
+                    <span class="result-unit">원</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3>🎓 학습 포인트</h3>
+            <p>
+                이 계산기는 <strong>원리금 균등 상환 방식</strong>을 사용합니다.
+                핵심 계산 로직을 직접 구현하면서 금융 수학을 배워보세요!
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // 메인 계산 함수
+        function calculateLoan() {
+            // 입력값 가져오기
+            const loanAmount = parseFloat(document.getElementById('loanAmount').value);
+            const annualRate = parseFloat(document.getElementById('interestRate').value);
+            const loanTermYears = parseFloat(document.getElementById('loanTerm').value);
+
+            // 입력값 검증
+            if (!loanAmount || !annualRate || loanTermYears === undefined) {
+                alert('모든 값을 입력해주세요!');
+                return;
+            }
+
+            if (loanAmount <= 0 || annualRate < 0 || loanTermYears <= 0) {
+                alert('올바른 값을 입력해주세요!');
+                return;
+            }
+
+            // TODO(human): 여기에 대출 계산 로직을 구현하세요
+            // 필요한 변수들:
+            // - monthlyRate: 월 이자율 (연 이자율 / 100 / 12)
+            // - numberOfPayments: 총 개월 수 (년수 * 12)
+            // - monthlyPayment: 월 상환금 (원리금 균등 상환 공식 사용)
+            // - totalPayment: 총 상환금 (월 상환금 * 총 개월 수)
+            // - totalInterest: 총 이자 (총 상환금 - 대출 원금)
+
+            const monthlyPayment = 0; // 이 부분을 구현하세요
+            const totalPayment = 0;   // 이 부분을 구현하세요
+            const totalInterest = 0;  // 이 부분을 구현하세요
+
+            // 결과 표시
+            displayResults(monthlyPayment, totalPayment, totalInterest);
+        }
+
+        // 결과를 화면에 표시하는 함수 (이미 구현됨)
+        function displayResults(monthly, total, interest) {
+            document.getElementById('monthlyPayment').textContent =
+                Math.round(monthly).toLocaleString('ko-KR');
+
+            document.getElementById('totalPayment').textContent =
+                Math.round(total).toLocaleString('ko-KR');
+
+            document.getElementById('totalInterest').textContent =
+                Math.round(interest).toLocaleString('ko-KR');
+
+            const resultSection = document.getElementById('resultSection');
+            resultSection.classList.add('show');
+            resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Enter 키로도 계산 가능
+        document.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                calculateLoan();
+            }
+        });
+    </script>
+</body>
+</html>

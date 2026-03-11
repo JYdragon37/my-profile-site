@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>간단한 계산기</title>
+    <style>
+        /* 전체 페이지 스타일 */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        /* 계산기 컨테이너 */
+        .calculator {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+            width: 320px;
+        }
+
+        /* 제목 */
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-top: 0;
+        }
+
+        /* 화면 표시 영역 */
+        .display {
+            background: #f0f0f0;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: right;
+            font-size: 24px;
+            min-height: 30px;
+            word-wrap: break-word;
+        }
+
+        /* 버튼 그리드 레이아웃 */
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        /* 모든 버튼의 공통 스타일 */
+        button {
+            padding: 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        /* 버튼 호버 효과 */
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        /* 버튼 클릭 효과 */
+        button:active {
+            transform: scale(0.95);
+        }
+
+        /* 숫자 버튼 */
+        .number {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .number:hover {
+            background: #d0d0d0;
+        }
+
+        /* 연산자 버튼 */
+        .operator {
+            background: #ff9500;
+            color: white;
+        }
+
+        .operator:hover {
+            background: #e68600;
+        }
+
+        /* 지우기 버튼 */
+        .clear {
+            background: #ff3b30;
+            color: white;
+        }
+
+        .clear:hover {
+            background: #e6352a;
+        }
+
+        /* 등호 버튼 (2칸 차지) */
+        .equals {
+            background: #34c759;
+            color: white;
+            grid-column: span 2;
+        }
+
+        .equals:hover {
+            background: #2fb350;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h1>🧮 계산기</h1>
+
+        <!-- 계산 결과를 보여주는 화면 -->
+        <div class="display" id="display">0</div>
+
+        <!-- 계산기 버튼들 -->
+        <div class="buttons">
+            <button class="clear" onclick="clearDisplay()">C</button>
+            <button class="operator" onclick="appendToDisplay('/')">/</button>
+            <button class="operator" onclick="appendToDisplay('*')">×</button>
+            <button class="operator" onclick="appendToDisplay('-')">-</button>
+
+            <button class="number" onclick="appendToDisplay('7')">7</button>
+            <button class="number" onclick="appendToDisplay('8')">8</button>
+            <button class="number" onclick="appendToDisplay('9')">9</button>
+            <button class="operator" onclick="appendToDisplay('+')">+</button>
+
+            <button class="number" onclick="appendToDisplay('4')">4</button>
+            <button class="number" onclick="appendToDisplay('5')">5</button>
+            <button class="number" onclick="appendToDisplay('6')">6</button>
+            <button class="number" onclick="appendToDisplay('0')">0</button>
+
+            <button class="number" onclick="appendToDisplay('1')">1</button>
+            <button class="number" onclick="appendToDisplay('2')">2</button>
+            <button class="number" onclick="appendToDisplay('3')">3</button>
+            <button class="number" onclick="appendToDisplay('.')">.</button>
+
+            <button class="equals" onclick="calculate()">=</button>
+            <button class="operator" onclick="deleteLast()">←</button>
+        </div>
+    </div>
+
+    <script>
+        // 현재 화면에 표시된 내용을 저장하는 변수
+        let currentDisplay = '0';
+
+        // 화면에 숫자나 연산자를 추가하는 함수
+        function appendToDisplay(value) {
+            // 처음 입력이면 '0'을 지우고 새로운 값으로 시작
+            if (currentDisplay === '0') {
+                currentDisplay = value;
+            } else {
+                // 이미 값이 있으면 뒤에 추가
+                currentDisplay += value;
+            }
+            updateDisplay();
+        }
+
+        // 화면을 업데이트하는 함수
+        function updateDisplay() {
+            document.getElementById('display').textContent = currentDisplay;
+        }
+
+        // 화면을 지우는 함수 (C 버튼)
+        function clearDisplay() {
+            currentDisplay = '0';
+            updateDisplay();
+        }
+
+        // 마지막 문자를 지우는 함수 (← 버튼)
+        function deleteLast() {
+            if (currentDisplay.length > 1) {
+                currentDisplay = currentDisplay.slice(0, -1);
+            } else {
+                currentDisplay = '0';
+            }
+            updateDisplay();
+        }
+
+        // 계산을 수행하는 함수 (= 버튼)
+        function calculate() {
+            try {
+                // eval()을 사용해서 수식을 계산
+                // 주의: 실제 프로젝트에서는 더 안전한 방법을 사용해야 합니다
+                const result = eval(currentDisplay);
+                currentDisplay = String(result);
+                updateDisplay();
+            } catch (error) {
+                // 계산 중 오류가 발생하면 에러 메시지 표시
+                currentDisplay = '오류';
+                updateDisplay();
+                setTimeout(() => {
+                    clearDisplay();
+                }, 1500);
+            }
+        }
+    </script>
+</body>
+</html>
