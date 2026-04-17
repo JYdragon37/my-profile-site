@@ -59,6 +59,11 @@ struct SettingsView: View {
                     NavigationLink("테마") {
                         ThemePickerView()
                     }
+                    NavigationLink {
+                        HabitPauseView()
+                    } label: {
+                        Label("스트릭 보호", systemImage: "pause.circle")
+                    }
                 }
 
                 // 기타

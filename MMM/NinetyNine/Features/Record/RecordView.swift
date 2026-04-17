@@ -4,6 +4,7 @@ import Charts
 struct RecordView: View {
 
     @StateObject private var vm = RecordViewModel()
+    @ObservedObject private var badgeService = BadgeService.shared
     @Environment(\.modelContext) private var modelContext
     @State private var showDetail: Bool = false
 
@@ -24,6 +25,9 @@ struct RecordView: View {
 
                     // 개인 리포트
                     PersonalReportCard(weekly: vm.weeklyReport, monthly: vm.monthlyReport)
+
+                    // 뱃지 컬렉션
+                    BadgeCollectionView(badges: badgeService.badges)
 
                     // 달력
                     CalendarGrid(
@@ -311,7 +315,12 @@ struct CalendarGrid: View {
                     if dayKey.isEmpty {
                         Color.clear.frame(height: 36)
                     } else {
-                        CalendarCell(dateKey: dayKey, record: records.first { $0.date == dayKey }) {
+                        let isPaused = dayKey.toDate().map { HabitPauseService.shared.isPaused(date: $0) } ?? false
+                        CalendarCell(
+                            dateKey: dayKey,
+                            record: records.first { $0.date == dayKey },
+                            isPaused: isPaused
+                        ) {
                             onSelect(dayKey)
                         }
                     }
@@ -340,6 +349,7 @@ struct CalendarGrid: View {
 struct CalendarCell: View {
     let dateKey: String
     let record: DailyRecord?
+    var isPaused: Bool = false
     let onTap: () -> Void
 
     var day: String { String(dateKey.suffix(2)) }
@@ -351,16 +361,25 @@ struct CalendarCell: View {
                 Circle()
                     .fill(cellColor)
                     .frame(width: 36, height: 36)
-                Text(day.hasPrefix("0") ? String(day.dropFirst()) : day)
-                    .font(.caption)
-                    .fontWeight(isToday ? .bold : .regular)
-                    .foregroundStyle(textColor)
+                if isPaused && record?.isSuccess != true {
+                    Image(systemName: "pause.fill")
+                        .font(.system(size: 10, weight: .medium))
+                        .foregroundStyle(Color(.secondaryLabel))
+                } else {
+                    Text(day.hasPrefix("0") ? String(day.dropFirst()) : day)
+                        .font(.caption)
+                        .fontWeight(isToday ? .bold : .regular)
+                        .foregroundStyle(textColor)
+                }
             }
         }
         .buttonStyle(.plain)
     }
 
     private var cellColor: Color {
+        if isPaused && record?.isSuccess != true {
+            return Color(.systemGray5)
+        }
         if let r = record {
             return r.isSuccess ? .primary : Color(.tertiarySystemFill)
         }
@@ -511,6 +530,73 @@ struct TypeRateRow: View {
                 .foregroundStyle(.secondary)
                 .frame(width: 32, alignment: .trailing)
         }
+    }
+}
+
+// MARK: - 뱃지 컬렉션
+
+struct BadgeCollectionView: View {
+    let badges: [Badge]
+
+    private let columns = Array(repeating: GridItem(.flexible(), spacing: Spacing.sm), count: 4)
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Spacing.md) {
+            Text("🏅 나의 뱃지")
+                .font(.headline)
+
+            let earned = badges.filter { $0.isEarned }.count
+            Text("\(earned)/\(badges.count) 획득")
+                .font(.caption)
+                .foregroundStyle(AppColor.labelSec)
+
+            LazyVGrid(columns: columns, spacing: Spacing.md) {
+                ForEach(badges) { badge in
+                    BadgeCellView(badge: badge)
+                }
+            }
+        }
+        .padding(Spacing.lg)
+        .background(AppColor.bgSecond)
+        .clipShape(RoundedRectangle(cornerRadius: Radius.md))
+        .padding(.horizontal, Spacing.xl)
+    }
+}
+
+struct BadgeCellView: View {
+    let badge: Badge
+
+    var body: some View {
+        VStack(spacing: Spacing.xs) {
+            Text(badge.emoji)
+                .font(.system(size: 32))
+                .grayscale(badge.isEarned ? 0 : 1)
+                .opacity(badge.isEarned ? 1.0 : 0.4)
+
+            Text(badge.isEarned ? badge.title : "?")
+                .font(.system(size: 10, weight: .medium))
+                .foregroundStyle(badge.isEarned ? AppColor.primary : AppColor.labelSec)
+                .lineLimit(2)
+                .multilineTextAlignment(.center)
+
+            if badge.isEarned, let date = badge.earnedAt {
+                Text(earnedDateText(date))
+                    .font(.system(size: 9))
+                    .foregroundStyle(AppColor.labelTer)
+            } else {
+                Text(" ")
+                    .font(.system(size: 9))
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, Spacing.xs)
+    }
+
+    private func earnedDateText(_ date: Date) -> String {
+        let f = DateFormatter()
+        f.locale = Locale(identifier: "ko_KR")
+        f.dateFormat = "M/d"
+        return f.string(from: date)
     }
 }
 

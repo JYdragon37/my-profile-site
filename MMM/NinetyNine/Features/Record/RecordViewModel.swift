@@ -119,18 +119,28 @@ final class RecordViewModel: ObservableObject {
     func loadAllRecords() {
         Task {
             let records = (try? await recordRepository?.getAllRecords()) ?? []
-            await MainActor.run { self.allRecords = records }
+            await MainActor.run {
+                self.allRecords = records
+                BadgeService.shared.evaluate(records: records)
+            }
         }
     }
+
+    /// Convenience accessor — delegates to BadgeService so views stay reactive via @ObservedObject
+    var badges: [Badge] { BadgeService.shared.badges }
 
     var currentStreak: Int {
         var streak = 0
         let calendar = Calendar.current
+        let pauseService = HabitPauseService.shared
         var checkDate = Date()
         while true {
             let key = checkDate.recordKey
             if allRecords.first(where: { $0.date == key && $0.isSuccess }) != nil {
                 streak += 1
+                checkDate = calendar.date(byAdding: .day, value: -1, to: checkDate) ?? checkDate
+            } else if pauseService.isPaused(date: checkDate) {
+                // Paused day: skip without breaking streak
                 checkDate = calendar.date(byAdding: .day, value: -1, to: checkDate) ?? checkDate
             } else { break }
         }
@@ -139,6 +149,7 @@ final class RecordViewModel: ObservableObject {
 
     var longestStreak: Int {
         let calendar = Calendar.current
+        let pauseService = HabitPauseService.shared
         let successDates = allRecords
             .filter { $0.isSuccess }
             .compactMap { $0.date.toDate() }
@@ -153,7 +164,17 @@ final class RecordViewModel: ObservableObject {
                 current += 1
                 longest = max(longest, current)
             } else if diff > 1 {
-                current = 1
+                // Check if all gap days are paused — if so, don't reset streak
+                let gapDays = (1..<diff).allSatisfy { offset in
+                    guard let gapDate = calendar.date(byAdding: .day, value: offset, to: successDates[i - 1]) else { return false }
+                    return pauseService.isPaused(date: gapDate)
+                }
+                if gapDays {
+                    current += 1
+                    longest = max(longest, current)
+                } else {
+                    current = 1
+                }
             }
             // diff == 0 means duplicate date entries — skip without resetting
         }
