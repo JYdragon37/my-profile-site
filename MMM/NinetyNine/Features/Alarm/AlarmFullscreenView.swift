@@ -12,6 +12,7 @@ struct AlarmFullscreenView: View {
     @State private var dragOffset: CGFloat = 0
     @State private var nickname: String = UserDefaults.standard.string(forKey: "userNickname") ?? "친구"
     @State private var currentTime: Date = Date()
+    @State private var showChallengeStartOverlay: Bool = false  // Feature O: 챌린지 시작 오버레이
     private let clockTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     private let dismissThreshold: CGFloat = 80
@@ -60,6 +61,25 @@ struct AlarmFullscreenView: View {
                 // 슬라이드 해제 버튼
                 slideToStart
                     .padding(.bottom, 60)
+            }
+
+            // MARK: - Feature O: 챌린지 시작 오버레이 (슬라이드 후 0.8초 표시)
+            if showChallengeStartOverlay {
+                ZStack {
+                    Color.black.opacity(0.45)
+                        .ignoresSafeArea()
+                    VStack(spacing: 16) {
+                        Text("💪")
+                            .font(.system(size: 64))
+                        Text("챌린지 시작!")
+                            .font(.system(size: 28, weight: .bold, design: .rounded))
+                            .foregroundStyle(.white)
+                    }
+                    .scaleEffect(showChallengeStartOverlay ? 1.0 : 0.6)
+                    .opacity(showChallengeStartOverlay ? 1.0 : 0.0)
+                    .animation(.spring(response: 0.35, dampingFraction: 0.65), value: showChallengeStartOverlay)
+                }
+                .transition(.opacity)
             }
         }
         .ignoresSafeArea()
@@ -172,6 +192,14 @@ struct AlarmFullscreenView: View {
             alarmID: alarmID,
             challengeAutoStart: challengeAutoStart
         )
-        onDismiss()
+        // Feature O: 챌린지 자동시작인 경우 "챌린지 시작! 💪" 오버레이 0.8초 표시 후 해제
+        if challengeAutoStart {
+            withAnimation { showChallengeStartOverlay = true }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                onDismiss()
+            }
+        } else {
+            onDismiss()
+        }
     }
 }
