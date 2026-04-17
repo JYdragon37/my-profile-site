@@ -196,45 +196,48 @@ struct HomeDashboardView: View {
     // MARK: - Greeting Header (상단 좌측)
     private var greetingHeader: some View {
         VStack(alignment: .leading, spacing: 6) {
-            // 인사말 + 스트릭 (같은 높이, 우측 정렬)
+            // 인사말 + 스트릭
             HStack(alignment: .top, spacing: 8) {
                 Image(systemName: timeIcon)
                     .font(.system(size: 26))
                     .foregroundStyle(.white)
+                    .frame(width: 30, alignment: .leading)  // 고정 너비로 텍스트 밀림 방지
+
                 Text(greeting)
                     .font(.system(size: 26, weight: .semibold))
                     .foregroundStyle(.white)
-                    .minimumScaleFactor(0.7)
-                    .lineLimit(3)
-                    .fixedSize(horizontal: false, vertical: true)
-                Spacer()
+                    .minimumScaleFactor(0.75)
+                    .lineLimit(2)
+                    .frame(maxWidth: .infinity, alignment: .leading)  // 가용 너비 내에서 wrap
+
                 if streak > 0 {
                     StreakBadge(streak: streak)
                         .padding(.top, 4)
+                        .fixedSize()  // 뱃지 크기 고정
                 }
             }
 
-            // 날짜 + 날씨
-            HStack(spacing: 8) {
-                Color.clear.frame(width: 34, height: 1)
-                Text(dateTimeString)
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(.white.opacity(0.9))
-
-                if vm.weather.temperature > 0 || !vm.weather.cityName.isEmpty {
-                    Text("·").foregroundStyle(.white.opacity(0.4))
-                    Text("\(vm.weather.cityName)  \(vm.weather.temperature)°")
-                        .font(.system(size: 15, weight: .medium))
-                        .foregroundStyle(.white.opacity(0.9))
-                    Text("·")
-                        .foregroundStyle(.white.opacity(0.4))
-                    Text(vm.weather.conditionKo)
-                        .font(.system(size: 15, weight: .medium))
-                        .foregroundStyle(.white.opacity(0.9))
-                }
-            }
+            // 날짜 + 날씨 — 단일 Text로 합쳐 오버플로우 방지
+            Text(dateWeatherString)
+                .font(.system(size: 15, weight: .medium))
+                .foregroundStyle(.white.opacity(0.85))
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+                .padding(.leading, 38)  // 아이콘 너비(30) + 간격(8)에 맞춤
         }
         .shadow(color: .black.opacity(0.8), radius: 8, x: 0, y: 2)
+    }
+
+    private var dateWeatherString: String {
+        var parts = [dateTimeString]
+        let w = vm.weather
+        if w.temperature > 0 || !w.cityName.isEmpty {
+            parts.append("·")
+            if !w.cityName.isEmpty { parts.append(w.cityName) }
+            if w.temperature > 0   { parts.append("\(w.temperature)°") }
+            if !w.conditionKo.isEmpty { parts.append(w.conditionKo) }
+        }
+        return parts.joined(separator: "  ")
     }
 
     // MARK: - Quote Center (화면 중앙 배치)

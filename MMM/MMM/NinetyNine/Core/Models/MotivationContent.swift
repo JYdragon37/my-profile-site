@@ -47,9 +47,8 @@ struct MotivationContent {
         cs.remove("/")
         let encoded = image.storagePath
             .addingPercentEncoding(withAllowedCharacters: cs) ?? image.storagePath
-        let bucket = Bundle.main.object(forInfoDictionaryKey: "FIREBASE_STORAGE_BUCKET") as? String
-                  ?? "ninetynine-4c11e.appspot.com"
-        return URL(string: "https://firebasestorage.googleapis.com/v0/b/\(bucket)/o/\(encoded)?alt=media")
+        // Config.firebaseStorageBucket 사용 — 하드코딩 fallback 제거
+        return URL(string: "https://firebasestorage.googleapis.com/v0/b/\(Config.firebaseStorageBucket)/o/\(encoded)?alt=media")
     }
 }
 
