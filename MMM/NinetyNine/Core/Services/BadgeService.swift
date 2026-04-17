@@ -210,13 +210,3 @@ final class BadgeService: ObservableObject {
         }.count
     }
 }
-
-// MARK: - String.toDate helper (reuse from RecordView extension, safe duplicate)
-
-private extension String {
-    func toDate(format: String = "yyyy-MM-dd") -> Date? {
-        let f = DateFormatter()
-        f.dateFormat = format
-        return f.date(from: self)
-    }
-}

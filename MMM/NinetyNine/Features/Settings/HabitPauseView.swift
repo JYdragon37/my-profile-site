@@ -124,12 +124,12 @@ private struct AddPauseSheet: View {
     @State private var startDate: Date = Date()
     @State private var endDate: Date = Date()
     @State private var reason: String = ""
+    @State private var usedDaysInSheet: Int = 0
 
     private let maxDaysPerMonth = 7
 
     private var remainingDays: Int {
-        let used = HabitPauseService.shared.pausedDaysThisMonth()
-        return max(0, maxDaysPerMonth - used)
+        max(0, maxDaysPerMonth - usedDaysInSheet)
     }
 
     private var maxEndDate: Date {
@@ -182,6 +182,9 @@ private struct AddPauseSheet: View {
             }
             .navigationTitle("일시정지 추가")
             .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                usedDaysInSheet = HabitPauseService.shared.pausedDaysThisMonth()
+            }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("취소") { dismiss() }
