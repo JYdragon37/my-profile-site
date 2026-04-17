@@ -302,24 +302,30 @@ final class TodayViewModel: ObservableObject {
             .store(in: &cancellables)
     }
 
-    // MARK: - 알람 해제 → 챌린지 연결
+    // MARK: - 알람 해제 → 챌린지 상태별 분기
     private func observeAlarmDismiss() {
         NotificationCenter.default.publisher(for: .challengeShouldStart)
-            .sink { [weak self] _ in
+            .sink { [weak self] notification in
                 guard let self else { return }
+                let autoStart = notification.userInfo?["challengeAutoStart"] as? Bool ?? false
+
                 switch self.state {
                 case .beforeStart:
-                    // 챌린지 미시작 → 새로 시작 후 이동
-                    self.startChallenge()
-                    self.shouldNavigateToChallenge = true
+                    if autoStart {
+                        self.startChallenge()
+                        self.shouldNavigateToChallenge = true
+                    }
+                    // autoStart=false: 알람만 종료, 화면 이동 없음
 
                 case .inProgress, .failed:
-                    // 이미 진행 중 → 타이머·기록 유지, 화면만 이동
-                    self.shouldNavigateToChallenge = true
+                    if autoStart {
+                        // 기존 타이머·기록 유지, 챌린지 화면으로만 이동
+                        self.shouldNavigateToChallenge = true
+                    }
 
                 case .completed:
-                    // 이미 완료 → 이동 불필요
-                    break
+                    // 챌린지 완료 상태 → 홈 화면으로 이동
+                    AlarmService.shared.shouldGoHome = true
                 }
             }
             .store(in: &cancellables)

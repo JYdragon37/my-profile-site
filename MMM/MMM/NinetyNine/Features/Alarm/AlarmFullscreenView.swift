@@ -10,13 +10,11 @@ struct AlarmFullscreenView: View {
     let onDismiss: () -> Void
 
     @ObservedObject private var motivationService = MotivationService.shared
-    @State private var dragOffset: CGFloat = 0
     @AppStorage("userNickname") private var nickname: String = "친구"
     @State private var currentTime: Date = Date()
-    @State private var showChallengeStartOverlay: Bool = false  // Feature O: 챌린지 시작 오버레이
+    @State private var isPulsing = false                        // 종료 버튼 펄스
+    @State private var showChallengeStartOverlay = false
     private let clockTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-
-    private let dismissThreshold: CGFloat = 80
 
     var body: some View {
         ZStack {
@@ -24,71 +22,95 @@ struct AlarmFullscreenView: View {
             backgroundLayer
 
             // MARK: - 콘텐츠 오버레이
-            VStack {
+            VStack(spacing: 0) {
                 Spacer()
 
-                // 글귀
-                VStack(spacing: 12) {
+                // 동기부여 글귀
+                VStack(spacing: 10) {
                     Text("\"\(motivationService.current.quote.quote)\"")
-                        .font(.title3)
-                        .fontWeight(.medium)
+                        .font(.system(size: 17, weight: .medium, design: .serif))
                         .multilineTextAlignment(.center)
-                        .foregroundStyle(.white)
-                        .padding(.horizontal, 32)
-                        .shadow(radius: 4)
+                        .foregroundStyle(.white.opacity(0.9))
+                        .padding(.horizontal, 36)
+                        .shadow(color: .black.opacity(0.6), radius: 6)
 
                     if !motivationService.current.quote.author.isEmpty {
                         Text("— \(motivationService.current.quote.author)")
-                            .font(.subheadline)
-                            .foregroundStyle(.white.opacity(0.8))
+                            .font(.caption)
+                            .foregroundStyle(.white.opacity(0.6))
                     }
                 }
 
                 Spacer()
 
-                // 시간 + 닉네임
-                VStack(spacing: 8) {
+                // 시계 + 인사
+                VStack(spacing: 6) {
                     Text(currentTimeString)
-                        .font(.system(size: 72, weight: .thin, design: .rounded))
+                        .font(.system(size: 80, weight: .thin, design: .rounded))
                         .foregroundStyle(.white)
+                        .shadow(color: .black.opacity(0.4), radius: 8)
 
                     Text("준비됐나요, \(nickname)? 👋")
                         .font(.title3)
-                        .foregroundStyle(.white.opacity(0.9))
+                        .foregroundStyle(.white.opacity(0.85))
                 }
 
                 Spacer()
 
-                // 슬라이드 해제 버튼
-                slideToStart
-                    .padding(.bottom, 60)
+                // ── 알라미 스타일 종료 버튼 ──────────────────────
+                stopButton
+                    .padding(.bottom, 56)
             }
 
-            // MARK: - Feature O: 챌린지 시작 오버레이 (슬라이드 후 0.8초 표시)
+            // 챌린지 시작 오버레이
             if showChallengeStartOverlay {
-                ZStack {
-                    Color.black.opacity(0.45)
-                        .ignoresSafeArea()
-                    VStack(spacing: 16) {
-                        Text("💪")
-                            .font(.system(size: 64))
-                        Text("챌린지 시작!")
-                            .font(.system(size: 28, weight: .bold, design: .rounded))
-                            .foregroundStyle(.white)
-                    }
-                    .scaleEffect(showChallengeStartOverlay ? 1.0 : 0.6)
-                    .opacity(showChallengeStartOverlay ? 1.0 : 0.0)
-                    .animation(.spring(response: 0.35, dampingFraction: 0.65), value: showChallengeStartOverlay)
+                Color.black.opacity(0.5).ignoresSafeArea()
+                VStack(spacing: 16) {
+                    Text("💪").font(.system(size: 72))
+                    Text("챌린지 시작!")
+                        .font(.system(size: 30, weight: .bold, design: .rounded))
+                        .foregroundStyle(.white)
                 }
+                .scaleEffect(showChallengeStartOverlay ? 1.0 : 0.7)
+                .animation(.spring(response: 0.35, dampingFraction: 0.6), value: showChallengeStartOverlay)
                 .transition(.opacity)
             }
         }
         .ignoresSafeArea()
-        .onReceive(clockTimer) { date in
-            currentTime = date
+        .onReceive(clockTimer) { date in currentTime = date }
+        .onAppear {
+            // 버튼 펄스 시작
+            withAnimation(.easeInOut(duration: 0.9).repeatForever(autoreverses: true)) {
+                isPulsing = true
+            }
+            Haptic.warning()
         }
-        // fetchIfNeeded는 NinetyNineApp.task에서 처리 — onAppear에서 재호출 불필요
-        // (호출 시 refreshCurrentContent() → current 교체 → 배경 교체 → 흑화 발생 원인)
+    }
+
+    // MARK: - 알라미 스타일 종료 버튼
+    private var stopButton: some View {
+        Button {
+            Haptic.heavy()
+            dismiss()
+        } label: {
+            HStack(spacing: 12) {
+                Image(systemName: "bell.slash.fill")
+                    .font(.system(size: 20, weight: .semibold))
+                Text("알람 끄기")
+                    .font(.system(size: 20, weight: .bold, design: .rounded))
+            }
+            .foregroundStyle(.black)
+            .frame(maxWidth: .infinity)
+            .frame(height: 64)
+            .background(
+                Capsule()
+                    .fill(Color.white)
+                    .shadow(color: .white.opacity(0.5), radius: isPulsing ? 20 : 8)
+            )
+            .scaleEffect(isPulsing ? 1.03 : 1.0)
+        }
+        .buttonStyle(.plain)
+        .padding(.horizontal, 48)
     }
 
     // MARK: - 배경 레이어 (Kingfisher 디스크 캐시)
@@ -123,59 +145,6 @@ struct AlarmFullscreenView: View {
         .ignoresSafeArea()
     }
 
-    // MARK: - 슬라이드 해제
-    // 드래그 또는 트랙 전체 탭으로 해제 가능 (손이 미끄러져도 앱이 잠기지 않도록)
-    private var slideToStart: some View {
-        ZStack(alignment: .leading) {
-            Capsule()
-                .fill(.white.opacity(0.25))
-                .frame(height: 56)
-                // 트랙 전체 탭으로도 해제 허용 (접근성 폴백)
-                .onTapGesture { dismiss() }
-
-            Capsule()
-                .fill(.white.opacity(0.15))
-                .frame(width: max(56, 56 + dragOffset), height: 56)
-                .animation(.interactiveSpring(), value: dragOffset)
-                .allowsHitTesting(false)
-
-            HStack {
-                Circle()
-                    .fill(.white)
-                    .frame(width: 48, height: 48)
-                    .overlay(
-                        Image(systemName: "chevron.right.2")
-                            .foregroundStyle(.black)
-                    )
-                    .offset(x: dragOffset)
-                    .gesture(
-                        DragGesture()
-                            .onChanged { value in
-                                dragOffset = max(0, min(value.translation.width, 200))
-                            }
-                            .onEnded { value in
-                                if dragOffset > dismissThreshold {
-                                    dismiss()
-                                } else {
-                                    withAnimation(.spring()) { dragOffset = 0 }
-                                }
-                            }
-                    )
-
-                Spacer()
-
-                Text("밀어서 시작")
-                    .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.8))
-                    .padding(.trailing, 20)
-            }
-            .padding(.leading, 4)
-            .allowsHitTesting(false)
-        }
-        .frame(width: 280)
-        .contentShape(Rectangle())
-    }
-
     // MARK: - Helpers
     private var currentTimeString: String {
         let f = DateFormatter()
@@ -188,12 +157,9 @@ struct AlarmFullscreenView: View {
             alarmID: alarmID,
             challengeAutoStart: challengeAutoStart
         )
-        // Feature O: 챌린지 자동시작인 경우 "챌린지 시작! 💪" 오버레이 0.8초 표시 후 해제
         if challengeAutoStart {
             withAnimation { showChallengeStartOverlay = true }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-                onDismiss()
-            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) { onDismiss() }
         } else {
             onDismiss()
         }

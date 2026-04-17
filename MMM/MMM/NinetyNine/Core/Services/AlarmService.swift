@@ -13,6 +13,7 @@ final class AlarmService: NSObject, ObservableObject {
 
     /// NotificationCenter.post 대신 @Published 사용 — 앱 백그라운드 복귀 시 타이밍 경쟁 없이 ContentView에 안전하게 전달
     @Published var pendingAlarm: PendingAlarm?
+    @Published var shouldGoHome: Bool = false   // 챌린지 완료 상태 알람 해제 시 홈으로
 
     struct PendingAlarm: Identifiable, Equatable {
         var id: String           // alarmID — Identifiable 준수
@@ -103,9 +104,12 @@ final class AlarmService: NSObject, ObservableObject {
         activeAlarmID = nil
         pendingAlarm  = nil   // fullScreenCover 닫기
         stopAlarmSound()
-        if challengeAutoStart {
-            NotificationCenter.default.post(name: .challengeShouldStart, object: nil)
-        }
+        // 항상 발행 — TodayViewModel이 challengeState + autoStart 조합으로 처리
+        NotificationCenter.default.post(
+            name: .challengeShouldStart,
+            object: nil,
+            userInfo: ["challengeAutoStart": challengeAutoStart]
+        )
         AnalyticsService.shared.log(.alarmDismissed)
     }
 

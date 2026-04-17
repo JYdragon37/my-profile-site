@@ -17,13 +17,20 @@ struct ContentView: View {
                 .tabItem { Label("설정", systemImage: "gearshape.fill") }.tag(3)
         }
         .tint(.primary)
-        // pendingAlarm이 set되는 순간 fullScreenCover 자동 표시
+        // 알람 전체화면 표시
         .fullScreenCover(item: $alarmService.pendingAlarm) { alarm in
             AlarmFullscreenView(
                 alarmID: alarm.id,
                 challengeAutoStart: alarm.challengeAutoStart,
                 onDismiss: { alarmService.pendingAlarm = nil }
             )
+        }
+        // 챌린지 완료 상태 알람 해제 → 홈 탭으로 이동
+        .onChange(of: alarmService.shouldGoHome) { _, should in
+            if should {
+                selectedTab = 0
+                alarmService.shouldGoHome = false
+            }
         }
     }
 }
