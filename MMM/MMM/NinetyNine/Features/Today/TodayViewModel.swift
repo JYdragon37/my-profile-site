@@ -186,7 +186,7 @@ final class TodayViewModel: ObservableObject {
     }
 
     // Feature G: Show badge toasts one at a time (queued)
-    private func showNextBadgeToast() {
+    func showNextBadgeToast() {
         guard !newlyEarnedBadges.isEmpty else {
             badgeToastBadge = nil
             return

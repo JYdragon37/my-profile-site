@@ -69,20 +69,12 @@ struct TodayView: View {
                 }
             }
         }
-        // Feature G: 뱃지 획득 토스트 (한 번에 1개씩, 큐 처리)
-        .overlay(alignment: .top) {
-            if let badge = vm.badgeToastBadge {
-                BadgeEarnedToast(badge: badge)
-                    .padding(.top, 60)
-                    .transition(.asymmetric(
-                        insertion: .move(edge: .top).combined(with: .opacity),
-                        removal: .opacity
-                    ))
-                    .zIndex(99)
-                    .animation(.spring(response: 0.4, dampingFraction: 0.75), value: vm.badgeToastBadge?.id)
+        // 뱃지 달성 팝업 (이미지 저장 포함)
+        .fullScreenCover(item: $vm.badgeToastBadge) { badge in
+            BadgeEarnedPopupView(badge: badge) {
+                vm.showNextBadgeToast()
             }
         }
-        .animation(.spring(response: 0.4, dampingFraction: 0.75), value: vm.badgeToastBadge?.id)
     }
 
     private func syncNavWithState() {
@@ -573,33 +565,6 @@ struct FirstSparkToast: View {
     }
 }
 
-// MARK: - Feature G: 뱃지 획득 토스트
-struct BadgeEarnedToast: View {
-    let badge: Badge
-
-    var body: some View {
-        HStack(spacing: Spacing.sm) {
-            Text(badge.emoji)
-                .font(.title3)
-            VStack(alignment: .leading, spacing: 2) {
-                Text("새 뱃지 획득!")
-                    .font(.caption)
-                    .foregroundStyle(.white.opacity(0.75))
-                Text(badge.title)
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.white)
-            }
-        }
-        .padding(.horizontal, Spacing.xl)
-        .padding(.vertical, Spacing.sm)
-        .background(
-            Capsule()
-                .fill(Color.black.opacity(0.75))
-                .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: 4)
-        )
-    }
-}
 
 // MARK: - 카운트다운 헤더
 struct TimerHeaderView: View {
