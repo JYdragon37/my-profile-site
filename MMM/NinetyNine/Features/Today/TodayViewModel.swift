@@ -1,6 +1,7 @@
 import Foundation
 import SwiftData
 import Combine
+import WidgetKit
 
 @MainActor
 final class TodayViewModel: ObservableObject {
@@ -102,6 +103,7 @@ final class TodayViewModel: ObservableObject {
         let isFirstEver = !hasStartedToday && completedItems.isEmpty
         completedItems.insert(id)
         activeTimerItem = nil
+        updateWidgetData()
 
         // Feature C: 오늘 세션에서 첫 번째 항목 완료 시 spark 타입이면 토스트 표시
         if isFirstEver,
@@ -163,6 +165,7 @@ final class TodayViewModel: ObservableObject {
         let elapsed = challengeTimer.stop()
         state = .completed(elapsedSeconds: elapsed)
         saveRecord(completed: routine.count, elapsed: elapsed, success: true)
+        updateWidgetData()
         Task {
             let streak = await computeCurrentStreak()
             UserDefaults.standard.set(streak, forKey: "currentStreak")
@@ -327,6 +330,29 @@ final class TodayViewModel: ObservableObject {
     private var recordDate: String {
         let start = challengeTimer.startedAt ?? Date()
         return start.recordKey
+    }
+
+    // MARK: - 위젯 데이터 업데이트
+    func updateWidgetData() {
+        let streak = UserDefaults.standard.integer(forKey: "currentStreak")
+        let isSuccess: Bool
+        if case .completed = state { isSuccess = true } else { isSuccess = false }
+
+        let nextItems: [String] = routine
+            .filter { !completedItems.contains($0.id) }
+            .prefix(3)
+            .map { $0.title }
+
+        let widgetData = WidgetData(
+            completedCount: completedItems.count,
+            totalCount: max(routine.count, 9),
+            streak: streak,
+            isSuccess: isSuccess,
+            nextItems: nextItems,
+            updatedAt: Date()
+        )
+        widgetData.save()
+        WidgetCenter.shared.reloadAllTimelines()
     }
 
     // MARK: - 오늘 이미 완료했는지 확인
