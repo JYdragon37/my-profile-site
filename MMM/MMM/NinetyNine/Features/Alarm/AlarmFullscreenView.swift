@@ -87,25 +87,30 @@ struct AlarmFullscreenView: View {
         .onReceive(clockTimer) { date in
             currentTime = date
         }
-        .onAppear {
-            Task { await motivationService.fetchIfNeeded() }
-        }
+        // fetchIfNeeded는 NinetyNineApp.task에서 처리 — onAppear에서 재호출 불필요
+        // (호출 시 refreshCurrentContent() → current 교체 → 배경 교체 → 흑화 발생 원인)
     }
 
     // MARK: - 배경 레이어 (Kingfisher 디스크 캐시)
     @ViewBuilder
     private var backgroundLayer: some View {
-        if let url = motivationService.current.imageURL {
-            KFImage(url)
-                .placeholder { defaultBackground }
-                .fade(duration: 0.2)
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
-                .overlay(Color.black.opacity(0.45))
-        } else {
+        ZStack {
+            // 항상 기본 그라디언트 먼저 표시 → 이미지 로딩 전 흑화 방지
             defaultBackground
+
+            if let url = motivationService.current.imageURL {
+                KFImage(url)
+                    .fade(duration: 0.2)
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
+            }
+
+            // 딤 오버레이 — 항상 적용 (이미지 로딩 여부 무관)
+            Color.black.opacity(0.4)
+                .ignoresSafeArea()
         }
+        .ignoresSafeArea()
     }
 
     private var defaultBackground: some View {
