@@ -122,7 +122,15 @@ final class MotivationService: ObservableObject {
 
     // MARK: - 앱 시작 시 fetch + 캐시
     func fetchIfNeeded() async {
-        if let lastFetch = UserDefaults.standard.object(forKey: cacheTimeKey) as? Date,
+        // init()에서 이미 캐시 로드됐고 fetch 주기 안이면 네트워크 skip
+        if !images.isEmpty,
+           let lastFetch = UserDefaults.standard.object(forKey: cacheTimeKey) as? Date,
+           Date().timeIntervalSince(lastFetch) < Config.motivationFetchIntervalHours * 3600 {
+            return
+        }
+        // 캐시 미로드 상태에서 fetch 주기 내면 FileManager에서 로드
+        if images.isEmpty,
+           let lastFetch = UserDefaults.standard.object(forKey: cacheTimeKey) as? Date,
            Date().timeIntervalSince(lastFetch) < Config.motivationFetchIntervalHours * 3600,
            let cachedImgs = loadImagesCache(),
            let cachedQts  = loadQuotesCache(),
@@ -193,16 +201,35 @@ final class MotivationService: ObservableObject {
     }
 
     // quotes 탭 헤더: id, quote, author, zone
+    // quote 필드에 쉼표가 포함될 수 있으므로 RFC 4180 CSV 파싱 사용
     private func parseQuotes(_ csv: String) -> [MotivationQuote] {
         var lines = csv.components(separatedBy: "\n")
         guard lines.count > 1 else { return [] }
         lines.removeFirst()
         return lines.compactMap { line -> MotivationQuote? in
-            let cols = line.components(separatedBy: ",")
-                          .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            let cols = parseCSVLine(line)
             guard cols.count >= 4, !cols[0].isEmpty else { return nil }
             return MotivationQuote(id: cols[0], quote: cols[1], author: cols[2], zone: cols[3])
         }
+    }
+
+    /// RFC 4180: 따옴표로 감싼 필드 내 쉼표 처리
+    private func parseCSVLine(_ line: String) -> [String] {
+        var result: [String] = []
+        var current = ""
+        var inQuotes = false
+        for char in line {
+            if char == "\"" {
+                inQuotes.toggle()
+            } else if char == "," && !inQuotes {
+                result.append(current.trimmingCharacters(in: .whitespacesAndNewlines))
+                current = ""
+            } else {
+                current.append(char)
+            }
+        }
+        result.append(current.trimmingCharacters(in: .whitespacesAndNewlines))
+        return result
     }
 
     // greetings 탭 헤더: id, greeting, zone
@@ -227,7 +254,7 @@ final class MotivationService: ObservableObject {
 
     // 현재 표시 중인 이미지를 우선 캐시 (홈화면 즉시 표시용)
     func prefetchCurrentImage() {
-        guard let url = MotivationService.storageURL(for: current.storagePath) else { return }
+        guard let url = current.imageURL else { return }
         KingfisherManager.shared.retrieveImage(with: url) { _ in }
     }
 

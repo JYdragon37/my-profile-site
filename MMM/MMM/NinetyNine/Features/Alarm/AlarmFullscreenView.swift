@@ -95,7 +95,7 @@ struct AlarmFullscreenView: View {
     // MARK: - 배경 레이어 (Kingfisher 디스크 캐시)
     @ViewBuilder
     private var backgroundLayer: some View {
-        if let url = MotivationService.storageURL(for: motivationService.current.storagePath) {
+        if let url = motivationService.current.imageURL {
             KFImage(url)
                 .placeholder { defaultBackground }
                 .fade(duration: 0.2)

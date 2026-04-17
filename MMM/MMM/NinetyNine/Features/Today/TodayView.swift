@@ -49,7 +49,7 @@ struct TodayView: View {
             let recordRepo = RecordRepository(modelContext: modelContext)
             vm.setup(routineRepo: routineRepo, recordRepo: recordRepo)
             vm.checkAlreadyCompletedToday()
-            Task { await MotivationService.shared.fetchIfNeeded() }
+            // fetchIfNeeded는 NinetyNineApp.task에서 최초 1회 처리 — 중복 호출 제거
         }
         .onReceive(
             NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
@@ -155,7 +155,7 @@ struct HomeDashboardView: View {
     // MARK: - Background (Kingfisher 디스크 캐시 — 재실행 시 즉시 표시)
     private var backgroundView: some View {
         Group {
-            if let url = MotivationService.storageURL(for: motivation.current.storagePath) {
+            if let url = motivation.current.imageURL {
                 KFImage(url)
                     .placeholder { fallbackGradient }   // 캐시 없을 때만 그라디언트
                     .fade(duration: 0.25)               // 부드러운 전환
