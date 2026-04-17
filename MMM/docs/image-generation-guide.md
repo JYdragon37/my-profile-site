@@ -1,4 +1,4 @@
-# 99 앱 이미지 생성 가이드라인 v1.0
+# 99 앱 이미지 생성 가이드라인 v2.0
 
 > 이 파일은 99 앱 홈 화면·알람 화면에 사용되는 배경 이미지를 생성할 때의 기준 문서입니다.
 > AI 이미지 생성 도구(Genspark, Midjourney 등)에 프롬프트를 입력하기 전 반드시 숙지하세요.
@@ -15,6 +15,17 @@
 
 배경 이미지는 유저가 **"나도 할 수 있다"는 에너지를 느끼게** 해야 합니다.
 화려한 성공보다 **과정의 아름다움**을 담는 것이 핵심입니다.
+
+### v2 핵심 방향 전환
+
+> **"인물 중심 이미지" → "공간 중심, 분위기 중심 이미지"**
+
+2차 결과물 기준 (`first_light_riverside_pre_dawn_v2`, `peak_mode_urban_momentum_seoul_v2` 등)이
+더 잘 나온 이유 3가지:
+
+1. **인물이 주인공이 아닌 분위기의 일부** — "운동하는 사람"이 아닌 "운동의 공기가 남아있는 공간"
+2. **딥다크 유지하되 Zone마다 밝기 차등** — 전 Zone 암흑톤이 아니라 시간대별로 살아있는 공기감
+3. **앱 배경으로서 실용적** — 상단 여백 충분, 흰 텍스트 얹기 쉬움, 시선 분산 없음
 
 ---
 
@@ -43,11 +54,13 @@
 - letters / numbers / captions / signage / logo / watermark / 한글 / 영문 전부
 - 텍스트를 나중에 얹기 좋은 **빈 공간만 확보**
 
-### 톤 기조
+### 톤 기조 (v2 업데이트)
 
-- **딥 다크 톤** 기본 유지 — 흰색 텍스트 가독성이 최우선
-- 새벽·아침 Zone은 드라마틱한 빛 표현 허용 (단, 텍스트 영역은 어둡게 유지)
-- 낮 Zone도 하이키(밝은) 이미지 피하고, **명암 대비 뚜렷**하게
+- 딥 다크 톤을 기본으로 하되, **모든 Zone을 지나치게 어둡게 만들지 않는다**
+- 시간대에 따라 밝기와 공기감을 조정해 **전체 세트가 밸런스 있게** 느껴지도록 한다
+- 새벽·밤 Zone은 더 깊고 조용하게
+- 아침·낮 Zone은 더 선명하고 breathable하게
+- 오후·골든아워는 따뜻하지만 여전히 텍스트 가독성을 해치지 않게
 
 ---
 
@@ -58,58 +71,69 @@
 | Zone | 시간 | 이름 | 무드 키워드 | 색온도 | 명도 |
 |------|------|------|-----------|--------|------|
 | 1 | 00–03 | 🌑 Deep Dark | silent effort, solitary discipline | 극냉(deep navy-black) | 극저 |
-| 2 | 03–06 | 🌒 First Light | pre-dawn warrior, early bird grit | 냉(navy-indigo) | 저 |
-| 3 | 06–09 | 🌅 Rise & Ignite | morning run, explosive start | 중온(warm gold-amber) | 중 |
-| 4 | 09–12 | ⚡ Peak Mode | focused hustle, city energy | 중온(bright daylight) | 중고 |
-| 5 | 12–15 | ☀️ Recharge | push through, midday grit | 중온(soft blue-white) | 중 |
-| 6 | 15–18 | 🌤 Second Wind | afternoon drive, refuse to quit | 중온(amber haze) | 중 |
+| 2 | 03–06 | 🌒 First Light | pre-dawn discipline, cool quiet | 냉(navy-indigo) | 저 |
+| 3 | 06–09 | 🌅 Rise & Ignite | morning energy, explosive start | 중온(warm gold-amber) | 중 |
+| 4 | 09–12 | ⚡ Peak Mode | focused hustle, city momentum | 중온(bright daylight) | 중고 |
+| 5 | 12–15 | ☀️ Recharge | steady persistence, breathable | 중온(soft blue-white) | 중 |
+| 6 | 15–18 | 🌤 Second Wind | renewed grit, warm afternoon | 중온(amber haze) | 중 |
 | 7 | 18–21 | 🌇 Golden Hour | earned rest, quiet satisfaction | 온(deep amber-gold) | 중저 |
-| 8 | 21–24 | 🌙 Wind Down | reflect and recover, tomorrow's fuel | 냉(dark navy) | 저 |
+| 8 | 21–24 | 🌙 Wind Down | recovery, tomorrow's fuel | 냉(dark navy) | 저 |
 
 ---
 
-## Zone별 무드 키워드 (프롬프트용)
+## Zone별 프롬프트 문구 (v2)
 
 ```
 Zone 1 (deep_dark):
-  silent city streets at 2am, lone figure training in empty gym,
-  solitary discipline, pitch-black sky, deep navy tones,
-  the work done when no one is watching
+  A quiet midnight training space, empty indoor gym, climbing wall, or disciplined athletic environment,
+  deep navy-black shadows with restrained practical light,
+  silent effort, solitary discipline, the work done when no one is watching,
+  environment-first composition, no prominent person,
+  if any person appears, only a tiny distant silhouette,
+  balanced dark tone with visible detail, no crushed blacks
 
 Zone 2 (first_light):
-  pre-dawn runner on empty road, athlete warming up before sunrise,
-  first hints of indigo light on horizon, dark quiet streets,
-  the ones who wake before the world
+  A nearly empty riverside road, bridge, or urban path in Seoul before dawn,
+  indigo sky softening toward pale blue, cool air, wet pavement, early discipline before the city wakes,
+  calm focus, quiet momentum, environment-first composition,
+  no prominent person, or only one tiny distant runner silhouette
 
 Zone 3 (rise_ignite):
-  morning runner at sunrise, explosive start energy, amber and rose light,
-  athletic silhouette against dramatic sky, fresh start momentum,
-  crisp morning air, powerful beginning
+  Sunrise over an urban running path, bridge, or city edge,
+  amber and rose light, crisp air, dramatic sky, fresh beginning with purpose,
+  energizing but not high-key, brighter than night scenes while preserving text readability,
+  environment-first composition, no prominent person, only a tiny distant silhouette if needed
 
 Zone 4 (peak_mode):
-  focused worker in bright urban setting, business district at full energy,
-  confident daylight, peak performance atmosphere,
-  city in full motion, sharp and clear
+  A modern Seoul business district in late morning,
+  sharp daylight through glass towers, crosswalks, architecture, focus and momentum through the city itself,
+  balanced contrast, clear and refined atmosphere,
+  people if present should be very small and anonymous,
+  environment-first composition, no hero subject
 
 Zone 5 (recharge):
-  midday athlete pushing through fatigue, quiet persistence,
-  soft diffused light, determination in stillness,
-  the grind continues, steady pace
+  A quiet midday field, stadium edge, training ground, or calm athletic environment,
+  soft diffused blue-white light, persistence, steady effort, breathable stillness,
+  balanced tone, not overly dark and not too bright,
+  prefer no person, or one tiny distant athlete only
 
 Zone 6 (second_wind):
-  afternoon training session, runner catching second wind,
-  warm amber light on empty track, refusing to stop,
-  grit in golden-tinted atmosphere
+  An empty running track, hillside road, or training route in late afternoon,
+  warm amber light, renewed energy after fatigue, subtle haze, quiet grit,
+  balanced warmth and shadow, motivational through atmosphere rather than a subject,
+  no prominent person, only a tiny distant silhouette if needed
 
 Zone 7 (golden_hour):
-  athlete at finish line, sunset over city after a hard day's work,
-  earned satisfaction, amber-to-indigo transition,
-  quiet pride, reflective achievement
+  An empty running track, riverside path, or athletic field at sunset,
+  deep amber-gold light shifting into dusky blue, long shadows, earned rest, calm pride,
+  balanced warm tone, reflective rather than triumphant,
+  prefer no person, or one tiny distant silhouette near the lower frame
 
 Zone 8 (wind_down):
-  solitary figure under night sky, city lights below,
-  earned rest, deep navy, tomorrow is another chance,
-  peaceful recovery, cozy darkness
+  A quiet rooftop, city overlook, or riverside night view in Seoul,
+  deep navy sky, soft city lights, peaceful recovery, reset for tomorrow,
+  night atmosphere with visible city detail, not excessively dark,
+  prefer no visible person, or one tiny distant silhouette at the edge of the frame
 ```
 
 ---
@@ -117,117 +141,177 @@ Zone 8 (wind_down):
 ## 레이아웃 원칙
 
 - **상단 1/3**: 충분한 여백 — 닉네임 인사말 + 날씨 + 시간 텍스트 영역
-- **낮은 horizon**: 피사체(사람, 도시, 산)는 하단에 배치
+- **낮은 horizon**: 피사체(공간, 도시, 산)는 하단에 배치
 - 흰색 텍스트를 얹었을 때 **가독성 확보 필수**
-- 피사체는 과하지 않게 — **여백이 압도감**을 만든다
+- **환경이 주인공** — 공간과 분위기가 화면 주도권을 가진다
 
 ---
 
 ## 테마 & 소재 가이드
 
-### 추천 소재 (다양하게 섞기)
+### 추천 소재 (환경·공간 중심)
 
 | 카테고리 | 소재 예시 |
 |---------|---------|
-| **달리기·운동** | 새벽 도로 위 러너, 혼자 트랙 도는 선수, 언덕 오르는 등산객 |
-| **도시·성실** | 이른 아침 비어있는 도심, 야근 후 새벽 사무실 조명, 빗속 출근길 |
-| **자연·극복** | 안개 낀 산 정상, 눈 속 트레일, 폭풍 뒤 맑은 하늘 |
-| **고독한 노력** | 혼자 훈련하는 선수, 빈 수영장, 빈 체육관, 인적 없는 도로 |
-| **경쟁·스포츠** | 출발선 직전, 마지막 코너, 시합 전 준비 |
-| **성공·성취** | 산 정상에 선 사람(뒷모습), 피니시 라인 직전, 새벽빛 속 홀로 걷기 |
+| **운동 공간** | 새벽의 빈 체육관, 아무도 없는 수영장, 이른 아침 빈 트랙 |
+| **도시·성실** | 새벽 비어있는 도심 거리, 이른 아침 한강변, 빗속 출근길 |
+| **자연·극복** | 안개 낀 산 능선, 눈 속 트레일, 폭풍 뒤 맑아진 하늘 |
+| **고요한 긴장감** | 출발선 직전의 빈 트랙, 경기 전 텅 빈 경기장 |
+| **성취의 공간** | 정상 직전 능선, 일몰 직후 비어있는 운동장, 혼자만 있는 새벽 루프탑 |
 
 ### 반드시 피해야 할 소재
 
 | 피해야 할 것 | 이유 |
 |------------|------|
-| 여러 사람이 웃고 있는 장면 | 소셜 무드 — 혼자 집중하는 앱 감성과 안 맞음 |
+| 여러 사람이 웃고 있는 장면 | 소셜 무드 — 혼자 집중하는 앱과 안 맞음 |
 | 화려한 파티·축제 | 과한 에너지 — 꾸준함 vs 순간 흥분 |
-| 풍경 사진 (사람 없음, 너무 한적) | 동기부여 에너지 부족 |
+| 인물이 주인공인 영웅 포즈 | 광고 컷 느낌, 몰입감 깨짐 |
 | 밝고 화사한 봄 꽃 | 목적의식 없는 가벼운 무드 |
-| 카메라 직접 보는 사람 | 광고 느낌, 몰입감 깨짐 |
+| 카메라 직접 보는 사람 | 광고 느낌, 시선 분산 |
+| 전체 화면을 어둡게 깔아버린 이미지 | 낮 Zone에서 앱 분위기 단조로워짐 |
 
-### 인물 사용 시 주의사항
+### 인물 사용 시 주의사항 (v2 업데이트)
 
-- 얼굴은 최대한 **피하거나 뒷모습·실루엣**으로만
-- 특정 인종·성별 편향 없이 다양하게
-- 실루엣 위주 — 내가 저 사람이 될 수 있다는 감각
+- 인물은 **주인공처럼 보이지 않게** 할 것
+- 가능하면 **인물이 없는 장면 우선**
+- 인물이 등장하더라도 **아주 작고 멀게, 익명적으로**
+- 얼굴 강조, 정면 응시, 영웅적 포즈, 광고 컷 같은 구도 **금지**
+- 뒷모습·실루엣 위주 — **환경과 분위기가 중심**
 
 ---
 
-## 프롬프트 필수 포함 문구
+## 프롬프트 필수 포함 문구 (v2)
 
 ```
-deep dark tone, low-key dramatic lighting, ample negative space in upper third,
-low horizon, no text no letters no watermark,
+balanced cinematic tone appropriate to the time zone, low-key dramatic lighting,
+ample negative space in upper third, low horizon, environment-first composition,
+no prominent person, and if a person appears, keep them very small, distant, and secondary,
+no text no letters no numbers no logo no watermark,
 9:16 vertical, documentary DSLR realism, cinematic
 ```
 
 ---
 
-## 컨셉별 프롬프트 예시
+## 마스터 프롬프트 템플릿 (v2 기본형)
 
-### 새벽 러너 (Zone 2 — first_light)
-
-```
-A lone runner on an empty Seoul highway bridge at 4am,
-the pre-dawn sky deep indigo above, city lights reflecting below,
-silhouette against the first faint glow on the horizon,
-no people around, absolute solitude, gritty determination,
-low horizon, no text no letters no watermark,
-9:16 vertical, documentary DSLR realism, cinematic
-```
-
-### 도시 새벽 (Zone 3 — rise_ignite)
+매번 이 템플릿을 기본으로 사용하고 `[ZONE MOOD]` 부분을 교체하세요.
 
 ```
-Empty business district street at sunrise in Seoul,
-amber and gold morning light cutting between skyscrapers,
-long shadows stretching on the wet pavement,
-a single figure in athletic gear walking confidently away from camera,
-no text no letters no watermark,
-9:16 vertical, documentary DSLR realism, dramatic cinematic
+Create a premium smartphone wallpaper for a motivational habit app.
+Show a realistic, cinematic scene that expresses [ZONE MOOD] through environment
+and atmosphere rather than through a prominent person.
+
+Environment-first composition, low horizon, ample negative space in the upper third
+for white UI text.
+Do not make any person the main subject. Prefer no visible person.
+If a person appears, keep them very small, distant, anonymous, and secondary,
+preferably silhouette or back view only.
+No face emphasis, no eye contact, no posed hero shot, no ad-like framing.
+
+Use a balanced cinematic tone appropriate to the time zone, with realistic light,
+subtle contrast, and documentary DSLR realism.
+Keep the image immersive, motivational, and refined, suitable for an iPhone wallpaper.
+No text, no letters, no numbers, no logo, no watermark.
+9:16 vertical.
 ```
+
+---
+
+## 컨셉별 프롬프트 예시 (v2)
 
 ### 빈 체육관 (Zone 1 — deep_dark)
 
 ```
-Empty boxing gym at 2am, single overhead light illuminating a punching bag,
-dark navy shadows, sweat on the floor, quiet intensity,
-no people visible, the work that happens in silence,
-no text no letters no watermark,
-9:16 vertical, documentary DSLR realism
+Create a premium smartphone wallpaper for a motivational habit app.
+Show a realistic, cinematic scene that expresses silent midnight discipline
+through environment and atmosphere rather than through a prominent person.
+
+A quiet midnight training space — empty indoor gym or climbing wall,
+deep navy-black shadows with restrained practical light,
+the work done when no one is watching, visible detail without crushed blacks.
+
+Environment-first composition, low horizon, ample negative space in the upper third.
+Prefer no visible person. If any person appears, only a tiny distant silhouette.
+No face emphasis, no posed hero shot.
+
+Balanced dark cinematic tone, realistic light, documentary DSLR realism.
+No text, no letters, no numbers, no logo, no watermark. 9:16 vertical.
 ```
 
-### 산 정상 뒷모습 (Zone 4 — peak_mode)
+### 한강변 새벽 (Zone 2 — first_light)
 
 ```
-A lone hiker standing at the peak of a mountain, view from behind,
-looking out over an endless sea of clouds below,
-bright morning light, small figure against vast sky,
-achievement without audience, no text no letters no watermark,
-9:16 vertical, documentary DSLR realism, wide angle
+Create a premium smartphone wallpaper for a motivational habit app.
+Show a realistic, cinematic scene that expresses pre-dawn urban discipline
+through environment and atmosphere rather than through a prominent person.
+
+A nearly empty riverside road or bridge path along the Han River in Seoul before dawn,
+indigo sky softening toward pale blue, cool air, wet pavement,
+early discipline before the city wakes, calm quiet momentum.
+
+Environment-first composition, low horizon, ample negative space in the upper third.
+Prefer no visible person, or only one tiny distant runner silhouette.
+No face emphasis, no posed hero shot.
+
+Balanced dark cinematic tone appropriate to pre-dawn, documentary DSLR realism.
+No text, no letters, no numbers, no logo, no watermark. 9:16 vertical.
 ```
 
-### 황금빛 피니시 (Zone 7 — golden_hour)
+### 서울 도심 아침 (Zone 4 — peak_mode)
 
 ```
-An empty running track at golden hour, long shadows across the lanes,
-sun setting low behind the city skyline,
-the quiet after effort, warm amber light,
-no people, a sense of completion and earned rest,
-no text no letters no watermark,
-9:16 vertical, documentary DSLR realism, cinematic
+Create a premium smartphone wallpaper for a motivational habit app.
+Show a realistic, cinematic scene that expresses focused urban momentum
+through environment and atmosphere rather than through a prominent person.
+
+A modern Seoul business district in late morning,
+sharp daylight through glass towers, crosswalks and architecture conveying
+focus and momentum through the city itself, balanced contrast, clear refined atmosphere.
+
+Environment-first composition, low horizon, ample negative space in the upper third.
+People if present should be very small and anonymous. No hero subject.
+No face emphasis, no ad-like framing.
+
+Balanced bright cinematic tone appropriate to late morning, documentary DSLR realism.
+No text, no letters, no numbers, no logo, no watermark. 9:16 vertical.
 ```
 
-### 야간 도시 (Zone 8 — wind_down)
+### 황금빛 트랙 (Zone 7 — golden_hour)
 
 ```
-Aerial view of city lights at night in Seoul, Han River visible,
-deep navy sky, countless tiny lights below,
-a single figure on a rooftop looking out (silhouette),
-reflective quiet, tomorrow I'll try again,
-no text no letters no watermark,
-9:16 vertical, documentary DSLR realism
+Create a premium smartphone wallpaper for a motivational habit app.
+Show a realistic, cinematic scene that expresses earned rest and quiet satisfaction
+through environment and atmosphere rather than through a prominent person.
+
+An empty running track or riverside athletic path at sunset,
+deep amber-gold light shifting into dusky blue, long shadows, earned calm pride,
+reflective rather than triumphant, the beauty of completion.
+
+Environment-first composition, low horizon, ample negative space in the upper third.
+Prefer no visible person, or one tiny distant silhouette near the lower frame.
+No face emphasis, no posed hero shot.
+
+Balanced warm cinematic tone, documentary DSLR realism.
+No text, no letters, no numbers, no logo, no watermark. 9:16 vertical.
+```
+
+### 서울 야경 (Zone 8 — wind_down)
+
+```
+Create a premium smartphone wallpaper for a motivational habit app.
+Show a realistic, cinematic scene that expresses peaceful recovery and reset
+through environment and atmosphere rather than through a prominent person.
+
+A quiet rooftop or city overlook in Seoul at night,
+deep navy sky above, soft city lights below, Han River visible,
+peaceful recovery, tomorrow is another chance, not excessively dark.
+
+Environment-first composition, low horizon, ample negative space in the upper third.
+Prefer no visible person, or one tiny distant silhouette at the edge of the frame.
+No face emphasis, no posed hero shot.
+
+Balanced night cinematic tone with visible city detail, documentary DSLR realism.
+No text, no letters, no numbers, no logo, no watermark. 9:16 vertical.
 ```
 
 ---
@@ -240,9 +324,9 @@ no text no letters no watermark,
 |---|------|
 | ☐ | 모델 확인, 프롬프트 영어 작성 |
 | ☐ | 9:16 세로형 설정 |
-| ☐ | 해당 Zone 무드·색온도 반영 |
-| ☐ | 상단 1/3 여백 확보 지시 포함 |
-| ☐ | `no text no letters no watermark` 포함 |
+| ☐ | 마스터 템플릿 기본형 사용 |
+| ☐ | 해당 Zone 무드 문구 삽입 |
+| ☐ | `no text no letters no numbers no logo no watermark` 포함 |
 
 ### 생성 후 검수
 
@@ -250,13 +334,14 @@ no text no letters no watermark,
 |---|------|
 | ✅ | 9:16 세로형 |
 | ✅ | 상단 1/3에 충분한 여백 (텍스트 영역) |
-| ✅ | 이미지 안에 텍스트 전혀 없음 |
-| ✅ | 딥 다크 톤 유지 (낮 Zone도 어두운 기조) |
+| ✅ | 이미지 안에 텍스트·숫자·로고 전혀 없음 |
+| ✅ | 시간대에 맞는 밝기와 공기감 (낮 Zone이 지나치게 어둡지 않음) |
 | ✅ | 흰색 텍스트 얹었을 때 가독성 확보 |
+| ✅ | **환경과 공간이 주인공** (인물이 화면 주도권 갖지 않음) |
+| ✅ | 인물 있다면 아주 작고 멀게, 실루엣·뒷모습만 |
 | ✅ | 동기부여 에너지 — 보고 나서 "하고 싶다" 느낌 |
 | ✅ | 너무 AI스럽지 않고 실사적 |
 | ✅ | 이전 컷과 소재·시간대·톤 충분히 다름 |
-| ✅ | 얼굴 노출 없음 (뒷모습·실루엣만) |
 
 ---
 
@@ -266,11 +351,11 @@ no text no letters no watermark,
 {zone_name}_{concept}_{descriptor}.jpg
 
 예시:
-  rise_ignite_runner_seoul_bridge_dawn.jpg
-  deep_dark_gym_solo_training.jpg
-  golden_hour_track_empty_sunset.jpg
-  peak_mode_mountain_summit_silhouette.jpg
-  wind_down_city_rooftop_night.jpg
+  rise_ignite_seoul_bridge_dawn.jpg
+  deep_dark_empty_gym_midnight.jpg
+  golden_hour_track_sunset.jpg
+  peak_mode_seoul_downtown_morning.jpg
+  wind_down_hanriver_night_overlook.jpg
 ```
 
 **Zone 이름 값:**
@@ -285,9 +370,9 @@ no text no letters no watermark,
 2. Google Sheets에 경로 + 글귀 입력:
 
 ```
-id | storage_path                              | quote                          | author
-1  | alarm-images/rise_ignite_runner_dawn.jpg  | 남보다 한 발 먼저 시작했어요      | 99
-2  | alarm-images/deep_dark_gym_solo.jpg       | 아무도 없을 때 하는 것이 진짜다    | 99
+id | storage_path                                   | quote                          | author
+1  | alarm-images/first_light_hanriver_dawn.jpg     | 세상이 잠든 시간에 내일이 만들어진다 | 99
+2  | alarm-images/deep_dark_empty_gym_midnight.jpg  | 아무도 없을 때 하는 것이 진짜다    | 99
 ```
 
 ---
@@ -307,5 +392,6 @@ id | storage_path                              | quote                          
 
 ---
 
-*최종 업데이트: 2026-04-17 | v1.0*
+*최종 업데이트: 2026-04-17 | v2.0*
+*v1.0 → v2.0: 인물 중심 → 공간·분위기 중심, 마스터 템플릿 추가, Zone별 밝기 차등 원칙 반영*
 *이 가이드는 99 앱 전용입니다. DailyVerse 가이드(dailyverse/docs/image-generation-guide.md)를 참고해 제작됨*
