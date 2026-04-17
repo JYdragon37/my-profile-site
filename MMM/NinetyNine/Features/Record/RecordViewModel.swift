@@ -1,6 +1,26 @@
 import Foundation
 import SwiftData
 
+// MARK: - Weekly / Monthly Report Models
+
+struct WeeklyReport {
+    let completionRate: Double      // 0~1
+    let totalItemsCompleted: Int
+    let bestDayCount: Int           // highest completion count in a day
+    let sparkRate: Double           // spark items completion rate
+    let flowRate: Double
+    let deepRate: Double
+    let activeDays: Int             // days with at least 1 item done
+}
+
+struct MonthlyReport {
+    let completionRate: Double
+    let currentStreak: Int
+    let longestStreak: Int
+    let personalBestSeconds: Int?   // fastest 9/9 completion
+    let totalChallengesCompleted: Int  // 9/9 days
+}
+
 // MARK: - Podium Entry
 struct PodiumEntry: Identifiable {
     let id = UUID()
@@ -213,6 +233,78 @@ final class RecordViewModel: ObservableObject {
         let total = records.count * indices.count
         let completed = records.flatMap { r in indices.map { r.itemStatus[safe: $0] ?? false } }.filter { $0 }.count
         return Double(completed) / Double(total)
+    }
+
+    // MARK: - Weekly Report
+    var weeklyReport: WeeklyReport {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        // Last 7 days including today
+        let last7Keys: [String] = (0..<7).compactMap { offset in
+            calendar.date(byAdding: .day, value: -offset, to: today).map { $0.recordKey }
+        }
+        let weekRecords = allRecords.filter { last7Keys.contains($0.date) }
+
+        // Completion rate: success days / 7
+        let successDays = weekRecords.filter { $0.isSuccess }.count
+        let completionRate = Double(successDays) / 7.0
+
+        // Total items completed across all 7 days
+        let totalItemsCompleted = weekRecords.reduce(0) { $0 + $1.completedCount }
+
+        // Best day: highest completedCount in a single day
+        let bestDayCount = weekRecords.map { $0.completedCount }.max() ?? 0
+
+        // Active days: days with at least 1 item done
+        let activeDays = weekRecords.filter { $0.completedCount > 0 }.count
+
+        // Type-specific rates
+        let sparkRate = weeklyItemCompletionRate(records: weekRecords, indices: [0, 1, 2])
+        let flowRate  = weeklyItemCompletionRate(records: weekRecords, indices: [3, 4, 5])
+        let deepRate  = weeklyItemCompletionRate(records: weekRecords, indices: [6, 7, 8])
+
+        return WeeklyReport(
+            completionRate: completionRate,
+            totalItemsCompleted: totalItemsCompleted,
+            bestDayCount: bestDayCount,
+            sparkRate: sparkRate,
+            flowRate: flowRate,
+            deepRate: deepRate,
+            activeDays: activeDays
+        )
+    }
+
+    private func weeklyItemCompletionRate(records: [DailyRecord], indices: [Int]) -> Double {
+        let filtered = records.filter { !$0.itemStatus.isEmpty }
+        guard !filtered.isEmpty else { return 0 }
+        let total = filtered.count * indices.count
+        let completed = filtered.flatMap { r in indices.map { r.itemStatus[safe: $0] ?? false } }.filter { $0 }.count
+        return Double(completed) / Double(total)
+    }
+
+    // MARK: - Monthly Report
+    var monthlyReport: MonthlyReport {
+        let calendar = Calendar.current
+        let today = Date()
+        let monthKey = today.yearMonthKey
+        let monthRecords = allRecords.filter { $0.date.hasPrefix(monthKey) }
+
+        // Completion rate: success days / days elapsed this month
+        let successCount = monthRecords.filter { $0.isSuccess }.count
+        let daysElapsed = calendar.component(.day, from: today)
+        let completionRate = daysElapsed > 0 ? Double(successCount) / Double(daysElapsed) : 0
+
+        // Personal best (fastest 9/9 completion)
+        let bestSeconds = monthRecords.filter { $0.isSuccess && $0.elapsedSeconds > 0 }
+            .map { $0.elapsedSeconds }.min()
+
+        return MonthlyReport(
+            completionRate: completionRate,
+            currentStreak: currentStreak,
+            longestStreak: longestStreak,
+            personalBestSeconds: bestSeconds,
+            totalChallengesCompleted: successCount
+        )
     }
 }
 

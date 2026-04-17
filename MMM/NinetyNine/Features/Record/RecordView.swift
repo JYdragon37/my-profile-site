@@ -22,6 +22,9 @@ struct RecordView: View {
                         onNext: { vm.changeMonth(offset: 1) }
                     )
 
+                    // 개인 리포트
+                    PersonalReportCard(weekly: vm.weeklyReport, monthly: vm.monthlyReport)
+
                     // 달력
                     CalendarGrid(
                         yearMonth: vm.currentYearMonth,
@@ -57,6 +60,163 @@ struct RecordView: View {
                 recordRepo: RecordRepository(modelContext: modelContext),
                 routineRepo: RoutineRepository(modelContext: modelContext)
             )
+        }
+    }
+}
+
+// MARK: - 개인 리포트 카드
+
+struct PersonalReportCard: View {
+    let weekly: WeeklyReport
+    let monthly: MonthlyReport
+    @State private var selectedTab: Int = 0
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Spacing.md) {
+            // Section title
+            Text("나의 리포트")
+                .font(.headline)
+
+            // Tab picker
+            Picker("기간", selection: $selectedTab) {
+                Text("이번 주").tag(0)
+                Text("이번 달").tag(1)
+            }
+            .pickerStyle(.segmented)
+
+            if selectedTab == 0 {
+                WeeklyReportView(report: weekly)
+            } else {
+                MonthlyReportView(report: monthly)
+            }
+        }
+        .padding(Spacing.lg)
+        .background(AppColor.bgSecond)
+        .clipShape(RoundedRectangle(cornerRadius: Radius.md))
+        .padding(.horizontal, Spacing.xl)
+    }
+}
+
+// MARK: - 주간 리포트
+
+struct WeeklyReportView: View {
+    let report: WeeklyReport
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Spacing.md) {
+            Text("이번 주 요약")
+                .font(.subheadline)
+                .foregroundStyle(AppColor.labelSec)
+
+            // Stat pills row
+            HStack(spacing: Spacing.sm) {
+                StatPill(label: "완료율", value: "\(Int(report.completionRate * 100))%")
+                StatPill(label: "총", value: "\(report.totalItemsCompleted)개")
+                StatPill(label: "최고", value: "\(report.bestDayCount)개/일")
+                StatPill(label: "활동일", value: "\(report.activeDays)일")
+            }
+
+            // Type breakdown bar
+            VStack(alignment: .leading, spacing: Spacing.xs) {
+                Text("유형별 완주율")
+                    .font(.caption)
+                    .foregroundStyle(AppColor.labelSec)
+
+                // Horizontal stacked bar
+                GeometryReader { geo in
+                    HStack(spacing: 2) {
+                        let total = report.sparkRate + report.flowRate + report.deepRate
+                        let sparkW = total > 0 ? report.sparkRate / total : 1.0 / 3.0
+                        let flowW  = total > 0 ? report.flowRate  / total : 1.0 / 3.0
+                        let deepW  = total > 0 ? report.deepRate  / total : 1.0 / 3.0
+
+                        RoundedRectangle(cornerRadius: 3)
+                            .fill(Color.orange.opacity(0.7))
+                            .frame(width: geo.size.width * sparkW, height: 10)
+                        RoundedRectangle(cornerRadius: 3)
+                            .fill(Color.blue.opacity(0.5))
+                            .frame(width: geo.size.width * flowW, height: 10)
+                        RoundedRectangle(cornerRadius: 3)
+                            .fill(Color.blue.opacity(0.85))
+                            .frame(width: geo.size.width * deepW, height: 10)
+                    }
+                }
+                .frame(height: 10)
+
+                // Legend
+                HStack(spacing: Spacing.md) {
+                    TypeRateLegend(emoji: "⚡", name: "뚝딱", rate: report.sparkRate)
+                    TypeRateLegend(emoji: "🔹", name: "착착", rate: report.flowRate)
+                    TypeRateLegend(emoji: "🔵", name: "몰입", rate: report.deepRate)
+                }
+            }
+        }
+    }
+}
+
+// MARK: - 월간 리포트
+
+struct MonthlyReportView: View {
+    let report: MonthlyReport
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Spacing.md) {
+            Text("이번 달 요약")
+                .font(.subheadline)
+                .foregroundStyle(AppColor.labelSec)
+
+            VStack(spacing: Spacing.sm) {
+                StatRow(label: "완료율", value: "\(Int(report.completionRate * 100))%")
+                StatRow(label: "현재 스트릭", value: "\(report.currentStreak)일")
+                StatRow(label: "최장 스트릭", value: "\(report.longestStreak)일")
+                StatRow(label: "9/9 완료", value: "\(report.totalChallengesCompleted)회")
+                StatRow(label: "이달 최고기록", value: personalBestDisplay)
+            }
+        }
+    }
+
+    private var personalBestDisplay: String {
+        guard let sec = report.personalBestSeconds, sec > 0 else { return "-" }
+        let m = sec / 60
+        let s = sec % 60
+        return s > 0 ? "\(m)분 \(s)초" : "\(m)분"
+    }
+}
+
+// MARK: - 서브 컴포넌트
+
+struct StatPill: View {
+    let label: String
+    let value: String
+
+    var body: some View {
+        VStack(spacing: 2) {
+            Text(value)
+                .font(.subheadline)
+                .fontWeight(.semibold)
+            Text(label)
+                .font(.caption2)
+                .foregroundStyle(AppColor.labelSec)
+        }
+        .padding(.horizontal, Spacing.sm)
+        .padding(.vertical, Spacing.xs)
+        .background(AppColor.bgThird)
+        .clipShape(RoundedRectangle(cornerRadius: Radius.sm))
+    }
+}
+
+struct TypeRateLegend: View {
+    let emoji: String
+    let name: String
+    let rate: Double
+
+    var body: some View {
+        HStack(spacing: Spacing.xs) {
+            Text(emoji)
+                .font(.caption2)
+            Text("\(name) \(Int(rate * 100))%")
+                .font(.caption2)
+                .foregroundStyle(AppColor.labelSec)
         }
     }
 }
