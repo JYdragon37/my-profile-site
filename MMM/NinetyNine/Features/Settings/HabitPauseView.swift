@@ -4,6 +4,7 @@ struct HabitPauseView: View {
 
     @State private var pauses: [HabitPause] = []
     @State private var showAddSheet: Bool = false
+    @State private var usedDays: Int = 0
 
     private let maxDaysPerMonth = 7
 
@@ -31,16 +32,13 @@ struct HabitPauseView: View {
 
             // Add pause button section
             Section {
-                let usedDays = HabitPauseService.shared.pausedDaysThisMonth()
-                let remaining = maxDaysPerMonth - usedDays
                 Button {
                     showAddSheet = true
                 } label: {
                     Label("일시정지 추가", systemImage: "plus.circle")
                 }
-                .disabled(remaining <= 0)
+                .disabled(maxDaysPerMonth - usedDays <= 0)
             } footer: {
-                let usedDays = HabitPauseService.shared.pausedDaysThisMonth()
                 Text("이달 사용 \(usedDays)/\(maxDaysPerMonth)일")
                     .font(.footnote)
                     .foregroundStyle(AppColor.labelSec)
@@ -63,7 +61,7 @@ struct HabitPauseView: View {
         }
         .navigationTitle("스트릭 보호")
         .onAppear { loadPauses() }
-        .sheet(isPresented: $showAddSheet, onDismiss: { loadPauses() }) {
+        .sheet(isPresented: $showAddSheet, onDismiss: { loadPauses(); usedDays = HabitPauseService.shared.pausedDaysThisMonth() }) {
             AddPauseSheet()
                 .presentationDetents([.medium])
         }
@@ -72,6 +70,7 @@ struct HabitPauseView: View {
     private func loadPauses() {
         pauses = HabitPauseService.shared.loadPauses()
             .sorted { $0.startDate > $1.startDate }
+        usedDays = HabitPauseService.shared.pausedDaysThisMonth()
     }
 
     private func formatDate(_ date: Date) -> String {

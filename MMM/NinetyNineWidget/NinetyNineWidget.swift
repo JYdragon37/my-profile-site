@@ -20,7 +20,7 @@ struct NinetyNineProvider: TimelineProvider {
     func getTimeline(in context: Context, completion: @escaping (Timeline<NinetyNineEntry>) -> Void) {
         let entry = NinetyNineEntry(date: Date(), data: WidgetData.load())
         // Refresh every 30 minutes
-        let nextUpdate = Calendar.current.date(byAdding: .minute, value: 30, to: Date())!
+        let nextUpdate = Calendar.current.date(byAdding: .minute, value: 30, to: Date()) ?? Date().addingTimeInterval(30 * 60)
         completion(Timeline(entries: [entry], policy: .after(nextUpdate)))
     }
 }

@@ -16,8 +16,6 @@ struct CompletionView: View {
     @State private var isNewBestRecord: Bool = false  // true if this run is a new personal best
     @State private var diffToTopSeconds: Int? = nil   // diff from rank 1 if not in top 3
 
-    var isNewRecord: Bool { elapsedSeconds < personalBestSeconds && personalBestSeconds != Int.max }
-
     var elapsedDisplay: String {
         let m = elapsedSeconds / 60
         let s = elapsedSeconds % 60
@@ -57,7 +55,7 @@ struct CompletionView: View {
                         Text("해냈어요, \(nickname)!")
                             .titleLarge()
 
-                        if isNewRecord {
+                        if isNewBestRecord {
                             Label("새로운 최고 기록! 🏆", systemImage: "star.fill")
                                 .font(.subheadline)
                                 .fontWeight(.semibold)

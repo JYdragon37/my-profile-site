@@ -8,9 +8,9 @@ struct AlarmFullscreenView: View {
     let challengeAutoStart: Bool
     let onDismiss: () -> Void
 
-    @StateObject private var motivationService = MotivationService.shared
+    @ObservedObject private var motivationService = MotivationService.shared
     @State private var dragOffset: CGFloat = 0
-    @State private var nickname: String = UserDefaults.standard.string(forKey: "userNickname") ?? "친구"
+    @AppStorage("userNickname") private var nickname: String = "친구"
     @State private var currentTime: Date = Date()
     @State private var showChallengeStartOverlay: Bool = false  // Feature O: 챌린지 시작 오버레이
     private let clockTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -87,7 +87,6 @@ struct AlarmFullscreenView: View {
             currentTime = date
         }
         .onAppear {
-            loadNickname()
             Task { await motivationService.fetchIfNeeded() }
         }
     }
@@ -181,10 +180,6 @@ struct AlarmFullscreenView: View {
         let f = DateFormatter()
         f.dateFormat = "HH:mm"
         return f.string(from: currentTime)
-    }
-
-    private func loadNickname() {
-        nickname = UserDefaults.standard.string(forKey: "userNickname") ?? "친구"
     }
 
     private func dismiss() {

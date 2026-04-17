@@ -24,18 +24,23 @@ struct HabitPause: Codable, Identifiable {
 class HabitPauseService {
     static let shared = HabitPauseService()
     private let key = "habit_pauses"
+    private var cachedPauses: [HabitPause]? = nil
 
     private init() {}
 
     func loadPauses() -> [HabitPause] {
+        if let cached = cachedPauses { return cached }
         guard let data = UserDefaults.standard.data(forKey: key),
               let pauses = try? JSONDecoder().decode([HabitPause].self, from: data) else {
+            cachedPauses = []
             return []
         }
+        cachedPauses = pauses
         return pauses
     }
 
     func savePauses(_ pauses: [HabitPause]) {
+        cachedPauses = nil
         if let data = try? JSONEncoder().encode(pauses) {
             UserDefaults.standard.set(data, forKey: key)
         }

@@ -86,7 +86,7 @@ final class RecordViewModel: ObservableObject {
     func loadMonthlyRecords() {
         Task {
             let records = (try? await recordRepository?.getMonthlyRecords(yearMonth: currentYearMonth)) ?? []
-            await MainActor.run { self.monthlyRecords = records }
+            self.monthlyRecords = records
         }
     }
 
@@ -98,11 +98,9 @@ final class RecordViewModel: ObservableObject {
     func deleteRecord(_ record: DailyRecord) {
         Task {
             try? await recordRepository?.deleteRecord(date: record.date)
-            await MainActor.run {
-                self.selectedRecord = nil
-                self.loadMonthlyRecords()
-                self.loadAllRecords()
-            }
+            self.selectedRecord = nil
+            self.loadMonthlyRecords()
+            self.loadAllRecords()
         }
     }
 
@@ -119,10 +117,8 @@ final class RecordViewModel: ObservableObject {
     func loadAllRecords() {
         Task {
             let records = (try? await recordRepository?.getAllRecords()) ?? []
-            await MainActor.run {
-                self.allRecords = records
-                BadgeService.shared.evaluate(records: records)
-            }
+            self.allRecords = records
+            BadgeService.shared.evaluate(records: records)
         }
     }
 
@@ -307,12 +303,19 @@ final class RecordViewModel: ObservableObject {
     var monthlyReport: MonthlyReport {
         let calendar = Calendar.current
         let today = Date()
-        let monthKey = today.yearMonthKey
-        let monthRecords = allRecords.filter { $0.date.hasPrefix(monthKey) }
+        let monthRecords = allRecords.filter { $0.date.hasPrefix(currentYearMonth) }
 
-        // Completion rate: success days / days elapsed this month
+        // Completion rate: success days / days elapsed this month (or total days for past months)
         let successCount = monthRecords.filter { $0.isSuccess }.count
-        let daysElapsed = calendar.component(.day, from: today)
+        let daysElapsed: Int
+        if currentYearMonth == today.yearMonthKey {
+            daysElapsed = calendar.component(.day, from: today)
+        } else if let monthDate = currentYearMonth.toYearMonthDate(),
+                  let range = calendar.range(of: .day, in: .month, for: monthDate) {
+            daysElapsed = range.count
+        } else {
+            daysElapsed = max(monthRecords.count, 1)
+        }
         let completionRate = daysElapsed > 0 ? Double(successCount) / Double(daysElapsed) : 0
 
         // Personal best (fastest 9/9 completion)

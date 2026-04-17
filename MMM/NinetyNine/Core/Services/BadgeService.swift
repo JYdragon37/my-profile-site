@@ -3,6 +3,7 @@ import Combine
 
 // MARK: - BadgeService
 
+@MainActor
 final class BadgeService: ObservableObject {
 
     static let shared = BadgeService()

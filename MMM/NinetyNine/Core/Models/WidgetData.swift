@@ -11,8 +11,13 @@ struct WidgetData: Codable {
     static let empty = WidgetData(completedCount: 0, totalCount: 9, streak: 0, isSuccess: false, nextItems: [], updatedAt: Date())
 
     static func load() -> WidgetData {
-        let defaults = UserDefaults(suiteName: "group.com.ninetynine.shared")
-        guard let data = defaults?.data(forKey: "widget_data"),
+        guard let defaults = UserDefaults(suiteName: "group.com.ninetynine.shared") else {
+            #if DEBUG
+            assertionFailure("App Group UserDefaults unavailable")
+            #endif
+            return .empty
+        }
+        guard let data = defaults.data(forKey: "widget_data"),
               let decoded = try? JSONDecoder().decode(WidgetData.self, from: data) else {
             return .empty
         }
@@ -20,7 +25,12 @@ struct WidgetData: Codable {
     }
 
     func save() {
-        let defaults = UserDefaults(suiteName: "group.com.ninetynine.shared")
-        defaults?.set(try? JSONEncoder().encode(self), forKey: "widget_data")
+        guard let defaults = UserDefaults(suiteName: "group.com.ninetynine.shared") else {
+            #if DEBUG
+            assertionFailure("App Group UserDefaults unavailable")
+            #endif
+            return
+        }
+        defaults.set(try? JSONEncoder().encode(self), forKey: "widget_data")
     }
 }

@@ -35,6 +35,7 @@ final class TodayViewModel: ObservableObject {
 
     private var pendingFinish = false                // 마일스톤 닫힌 뒤 finishChallenge 예약
     private var hasStartedToday: Bool = false        // Feature C: 오늘 세션에서 첫 완료 여부
+    private var isSetUp = false                      // setup() 중복 호출 방지
 
     // MARK: - Dependencies
     let challengeTimer = ChallengeTimer()
@@ -45,6 +46,8 @@ final class TodayViewModel: ObservableObject {
 
     // MARK: - Setup
     func setup(routineRepo: RoutineRepositoryProtocol, recordRepo: RecordRepositoryProtocol) {
+        guard !isSetUp else { return }
+        isSetUp = true
         self.routineRepository = routineRepo
         self.recordRepository = recordRepo
         loadTodayRoutine()
