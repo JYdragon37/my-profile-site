@@ -22,9 +22,11 @@ struct TodayView: View {
                     case .challenge:
                         ChallengeView(vm: vm, navPath: $navPath)
                     case .completion(let elapsed):
-                        CompletionView(elapsedSeconds: elapsed, onDismiss: {
-                            navPath.removeAll()
-                        })
+                        CompletionView(
+                            elapsedSeconds: elapsed,
+                            onDismiss: { navPath.removeAll() },
+                            recordRepository: vm.recordRepository
+                        )
                     }
                 }
         }
@@ -56,6 +58,15 @@ struct TodayView: View {
         // 상태 변화 감지 → 챌린지/완료 화면으로 자동 push
         .onChange(of: vm.stateID) { _, _ in
             syncNavWithState()
+        }
+        // Feature O: 알람 해제 후 앱 포그라운드 진입 시 챌린지 화면으로 자동 이동
+        .onChange(of: vm.shouldNavigateToChallenge) { _, shouldNavigate in
+            if shouldNavigate {
+                vm.shouldNavigateToChallenge = false
+                if !navPath.contains(.challenge) {
+                    navPath = [.challenge]
+                }
+            }
         }
     }
 
@@ -475,22 +486,35 @@ struct ChallengeView: View {
     @ObservedObject private var motivation = MotivationService.shared
 
     var body: some View {
-        VStack(spacing: 0) {
-            // 카운트다운 헤더 (고정)
-            TimerHeaderView(timer: vm.challengeTimer, motivation: motivation.current)
+        ZStack(alignment: .top) {
+            VStack(spacing: 0) {
+                // 카운트다운 헤더 (고정)
+                TimerHeaderView(timer: vm.challengeTimer, motivation: motivation.current)
 
-            // 루틴 목록 — 남은 공간을 균등하게 활용
-            ScrollView {
-                RoutinePreviewList(
-                    items: vm.routine,
-                    completedItems: vm.completedItems,
-                    onTap: { item in
-                        Haptic.tap()
-                        vm.tapItem(item)
-                    }
-                )
-                .padding(.top, Spacing.xl)
-                .padding(.bottom, Spacing.huge)
+                // 루틴 목록 — 남은 공간을 균등하게 활용
+                ScrollView {
+                    RoutinePreviewList(
+                        items: vm.routine,
+                        completedItems: vm.completedItems,
+                        onTap: { item in
+                            Haptic.tap()
+                            vm.tapItem(item)
+                        }
+                    )
+                    .padding(.top, Spacing.xl)
+                    .padding(.bottom, Spacing.huge)
+                }
+            }
+
+            // Feature C: 첫 번째 spark 항목 완료 시 플로팅 토스트
+            if vm.showFirstSparkToast {
+                FirstSparkToast()
+                    .padding(.top, Spacing.lg)
+                    .transition(.asymmetric(
+                        insertion: .move(edge: .top).combined(with: .opacity),
+                        removal: .opacity
+                    ))
+                    .zIndex(1)
             }
         }
         .toolbar(.hidden, for: .navigationBar)
@@ -514,6 +538,26 @@ struct ChallengeView: View {
             }
         }
         .animation(.easeInOut(duration: 0.15), value: vm.milestoneToShow != nil)
+        .animation(.spring(response: 0.4, dampingFraction: 0.75), value: vm.showFirstSparkToast)
+    }
+}
+
+// MARK: - Feature C: 첫 번째 spark 완료 토스트
+struct FirstSparkToast: View {
+    var body: some View {
+        HStack(spacing: Spacing.sm) {
+            Text("시작했어요! 🌟")
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .foregroundStyle(.white)
+        }
+        .padding(.horizontal, Spacing.xl)
+        .padding(.vertical, Spacing.sm)
+        .background(
+            Capsule()
+                .fill(Color.black.opacity(0.72))
+                .shadow(color: .black.opacity(0.25), radius: 8, x: 0, y: 3)
+        )
     }
 }
 
@@ -522,15 +566,37 @@ struct TimerHeaderView: View {
     @ObservedObject var timer: ChallengeTimer
     var motivation: MotivationContent
 
+    // Pulse animation state
+    @State private var isPulsing: Bool = false
+
+    /// < 30분 구간 여부
+    private var isUnder30Min: Bool { timer.remainingSeconds < 30 * 60 }
+    /// < 60분 구간 여부
+    private var isUnder60Min: Bool { timer.remainingSeconds < 60 * 60 }
+
     var body: some View {
         VStack(spacing: Spacing.xs) {
-            // 타이머 - 종료버튼 제거 영역만큼 아래로
+            // 브랜드 레이블
+            Text("99분 챌린지")
+                .font(.caption)
+                .fontWeight(.semibold)
+                .foregroundStyle(AppColor.labelSec)
+                .padding(.top, Spacing.huge)
+
+            // 타이머
             Text(timer.remainingFormatted)
                 .font(.system(size: 48, weight: .thin, design: .rounded))
                 .monospacedDigit()
+                .foregroundStyle(timerTextColor)
                 .contentTransition(.numericText())
                 .animation(.linear(duration: 1), value: timer.remainingFormatted)
-                .padding(.top, Spacing.huge)   // 종료버튼 높이만큼 아래로
+                .scaleEffect(isPulsing ? 1.06 : 1.0)
+                .animation(
+                    isUnder30Min
+                        ? .easeInOut(duration: 0.7).repeatForever(autoreverses: true)
+                        : .default,
+                    value: isPulsing
+                )
 
             // 진척도 바
             ProgressView(value: timer.progress)
@@ -556,6 +622,23 @@ struct TimerHeaderView: View {
             .padding(.bottom, Spacing.sm)
         }
         .background(AppColor.bg)
+        .onChange(of: isUnder30Min) { _, nowUnder30 in
+            if nowUnder30 {
+                isPulsing = true
+            } else {
+                isPulsing = false
+            }
+        }
+        .onAppear {
+            if isUnder30Min { isPulsing = true }
+        }
+    }
+
+    /// 타이머 텍스트 색상: < 30min → red, < 60min → orange, 그 외 기본
+    private var timerTextColor: Color {
+        if isUnder30Min { return AppColor.warning }
+        if isUnder60Min { return AppColor.accent }
+        return AppColor.primary
     }
 
     private var timerColor: Color {

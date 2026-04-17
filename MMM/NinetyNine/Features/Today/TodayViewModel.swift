@@ -27,8 +27,11 @@ final class TodayViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var weather: WeatherData = .placeholder
     @Published var milestoneToShow: ItemType?        // 그룹 완료 축하 팝업
+    @Published var showFirstSparkToast: Bool = false // Feature C: 첫 번째 항목 완료 토스트
+    @Published var shouldNavigateToChallenge: Bool = false  // Feature O: 알람 해제 후 자동 챌린지 화면 이동
 
     private var pendingFinish = false                // 마일스톤 닫힌 뒤 finishChallenge 예약
+    private var hasStartedToday: Bool = false        // Feature C: 오늘 세션에서 첫 완료 여부
 
     // MARK: - Dependencies
     let challengeTimer = ChallengeTimer()
@@ -94,8 +97,22 @@ final class TodayViewModel: ObservableObject {
 
     // MARK: - 항목 완료 (타이머 완료 or 즉시)
     func completeItem(_ id: Int) {
+        let isFirstEver = !hasStartedToday && completedItems.isEmpty
         completedItems.insert(id)
         activeTimerItem = nil
+
+        // Feature C: 오늘 세션에서 첫 번째 항목 완료 시 spark 타입이면 토스트 표시
+        if isFirstEver,
+           let item = routine.first(where: { $0.id == id }),
+           item.type == .spark {
+            hasStartedToday = true
+            showFirstSparkToast = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) {
+                self.showFirstSparkToast = false
+            }
+        } else if isFirstEver {
+            hasStartedToday = true
+        }
 
         let isAllDone = completedItems.count == routine.count
         let completedGroup = detectGroupCompletion(for: id)
@@ -185,6 +202,8 @@ final class TodayViewModel: ObservableObject {
         activeTimerItem = nil
         milestoneToShow = nil
         pendingFinish = false
+        hasStartedToday = false
+        showFirstSparkToast = false
         challengeTimer.reset()
         state = .beforeStart
         loadTodayRoutine()
@@ -197,6 +216,8 @@ final class TodayViewModel: ObservableObject {
         activeTimerItem = nil
         milestoneToShow = nil
         pendingFinish = false
+        hasStartedToday = false
+        showFirstSparkToast = false
         state = .beforeStart
         Task {
             try? await recordRepository?.deleteRecord(date: Date().recordKey)
@@ -249,11 +270,15 @@ final class TodayViewModel: ObservableObject {
             .store(in: &cancellables)
     }
 
-    // MARK: - 알람 해제 → 자동 시작
+    // MARK: - 알람 해제 → 자동 시작 + 챌린지 화면 이동 (Feature O)
     private func observeAlarmDismiss() {
         NotificationCenter.default.publisher(for: .challengeShouldStart)
             .sink { [weak self] _ in
-                Task { self?.startChallenge() }
+                guard let self else { return }
+                Task {
+                    self.startChallenge()
+                    self.shouldNavigateToChallenge = true
+                }
             }
             .store(in: &cancellables)
     }

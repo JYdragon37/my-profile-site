@@ -4,11 +4,17 @@ import SwiftUI
 struct CompletionView: View {
     let elapsedSeconds: Int
     let onDismiss: () -> Void
+    var recordRepository: (any RecordRepositoryProtocol)? = nil
 
     @AppStorage("userNickname") private var nickname: String = "친구"
     @AppStorage("personalBestSeconds") private var personalBestSeconds: Int = Int.max
     @State private var showContent: Bool = false
     @State private var showConfetti: Bool = false
+
+    // Podium state
+    @State private var podiumRank: Int? = nil         // 1~3 if in top 3
+    @State private var isNewBestRecord: Bool = false  // true if this run is a new personal best
+    @State private var diffToTopSeconds: Int? = nil   // diff from rank 1 if not in top 3
 
     var isNewRecord: Bool { elapsedSeconds < personalBestSeconds && personalBestSeconds != Int.max }
 
@@ -70,6 +76,11 @@ struct CompletionView: View {
                     .offset(y: showContent ? 0 : 12)
                     .animation(.easeOut(duration: 0.35).delay(0.2), value: showContent)
 
+                    // 개인 포디엄 배지
+                    podiumBadge
+                        .opacity(showContent ? 1 : 0)
+                        .animation(.easeOut(duration: 0.3).delay(0.3), value: showContent)
+
                     // 기록 카드
                     VStack(spacing: Spacing.md) {
                         Divider()
@@ -108,6 +119,99 @@ struct CompletionView: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 showConfetti = true
             }
+            Task { await loadPodiumData() }
+        }
+    }
+
+    // MARK: - 포디엄 배지 뷰
+    @ViewBuilder
+    private var podiumBadge: some View {
+        if isNewBestRecord {
+            // 새 개인 기록
+            HStack(spacing: Spacing.sm) {
+                Text("🏆")
+                    .font(.title3)
+                Text("새 개인 기록!")
+                    .font(.subheadline)
+                    .fontWeight(.bold)
+                    .foregroundStyle(AppColor.accent)
+            }
+            .padding(.horizontal, Spacing.lg)
+            .padding(.vertical, Spacing.sm)
+            .background(AppColor.accent.opacity(0.12))
+            .clipShape(Capsule())
+        } else if let rank = podiumRank {
+            // 개인 순위 1~3위
+            let medal = rank == 1 ? "🥇" : rank == 2 ? "🥈" : "🥉"
+            HStack(spacing: Spacing.sm) {
+                Text(medal)
+                    .font(.title3)
+                Text("오늘 개인 \(rank)위예요")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(AppColor.primary)
+            }
+            .padding(.horizontal, Spacing.lg)
+            .padding(.vertical, Spacing.sm)
+            .background(AppColor.bgSecond)
+            .clipShape(Capsule())
+        } else if let diff = diffToTopSeconds {
+            // 포디엄 밖
+            let diffMin = diff / 60
+            let diffSec = diff % 60
+            let diffStr = diffSec > 0 ? "\(diffMin)분 \(diffSec)초" : "\(diffMin)분"
+            HStack(spacing: Spacing.sm) {
+                Image(systemName: "trophy")
+                    .font(.subheadline)
+                    .foregroundStyle(AppColor.labelSec)
+                Text("개인 최고까지 \(diffStr) 차이에요")
+                    .font(.subheadline)
+                    .foregroundStyle(AppColor.labelSec)
+            }
+            .padding(.horizontal, Spacing.lg)
+            .padding(.vertical, Spacing.sm)
+            .background(AppColor.bgSecond)
+            .clipShape(Capsule())
+        }
+    }
+
+    // MARK: - 포디엄 데이터 로드
+    private func loadPodiumData() async {
+        guard let repo = recordRepository else { return }
+        let records = (try? await repo.getAllRecords()) ?? []
+        // isSuccess == true 인 기록을 elapsedSeconds 오름차순 정렬
+        let successRecords = records
+            .filter { $0.isSuccess }
+            .sorted { $0.elapsedSeconds < $1.elapsedSeconds }
+
+        // 현재 기록이 새 최고인지 확인
+        let topSeconds = successRecords.first?.elapsedSeconds
+        if let top = topSeconds {
+            isNewBestRecord = elapsedSeconds < top
+        } else {
+            // 기록이 없으면 첫 완주 = 새 최고
+            isNewBestRecord = true
+        }
+
+        if isNewBestRecord {
+            // 새 최고 기록이면 별도 배지로 처리
+            return
+        }
+
+        // 포디엄 상위 3 개에 현재 기록이 들어가는지 확인
+        // 현재 세션을 포함해 다시 삽입해 순위 산정
+        var updatedRecords = successRecords.map { $0.elapsedSeconds }
+        updatedRecords.append(elapsedSeconds)
+        updatedRecords.sort()
+
+        // 중복 허용 순위: 현재 기록의 첫 번째 위치 (1-indexed)
+        if let firstIndex = updatedRecords.firstIndex(of: elapsedSeconds) {
+            let rank = firstIndex + 1
+            if rank <= 3 {
+                podiumRank = rank
+            } else if let best = updatedRecords.first {
+                diffToTopSeconds = elapsedSeconds - best
+            }
         }
     }
 
@@ -134,35 +238,45 @@ struct IncompleteView: View {
             Spacer()
 
             VStack(spacing: Spacing.xxxl) {
-                // 이모지
-                Text(reason == .timeout ? "⏰" : "😮‍💨")
-                    .font(.system(size: 64))
-                    .scaleEffect(showContent ? 1 : 0.5)
-                    .animation(.spring(response: 0.4, dampingFraction: 0.6), value: showContent)
+                // 이모지 — 따뜻한 톤으로 교체
+                Text(completedCount > 0 ? "🌱" : (reason == .timeout ? "⏰" : "🌿"))
+                    .font(.system(size: 72))
+                    .scaleEffect(showContent ? 1 : 0.3)
+                    .animation(.spring(response: 0.5, dampingFraction: 0.55).delay(0.05), value: showContent)
 
-                // 메시지
+                // 메시지 — 달성한 것을 먼저 칭찬
                 VStack(spacing: Spacing.sm) {
-                    Text(reason == .timeout ? "시간이 다 됐습니다" : "오늘은 여기까지")
-                        .titleMedium()
+                    if completedCount > 0 {
+                        Text("오늘 \(completedCount)개 해냈어요!")
+                            .titleMedium()
+                    } else {
+                        Text(reason == .timeout ? "시간이 다 됐어요" : "오늘은 여기까지")
+                            .titleMedium()
+                    }
 
-                    Text("\(completedCount) / 9 완료")
+                    Text("작은 시작이 변화를 만들어요")
                         .bodySecondary()
+                        .multilineTextAlignment(.center)
                 }
 
-                // 미완료 항목 카드
+                // 항목 카드 — 완료/미완료 모두 표시, 미완료는 부드럽게
                 if !incompleteItems.isEmpty {
                     VStack(alignment: .leading, spacing: Spacing.sm) {
-                        Text("미완료 항목")
-                            .bodySecondary()
+                        Text("남은 항목")
+                            .font(.caption)
+                            .foregroundStyle(AppColor.labelTer)
                             .padding(.bottom, Spacing.xs)
 
                         ForEach(incompleteItems) { item in
                             HStack(spacing: Spacing.sm) {
+                                Image(systemName: "circle.dashed")
+                                    .font(.subheadline)
+                                    .foregroundStyle(AppColor.labelTer)
                                 Text(item.type.emoji)
                                     .font(.body)
                                 Text(item.title)
                                     .font(.subheadline)
-                                    .foregroundStyle(AppColor.labelSec)
+                                    .foregroundStyle(AppColor.labelTer)
                             }
                         }
                     }
@@ -172,7 +286,7 @@ struct IncompleteView: View {
                 }
 
                 // 격려 메시지
-                Text("내일은 더 일찍 시작해봐요, \(nickname)")
+                Text("내일 또 만나요, \(nickname) 👋")
                     .bodySecondary()
                     .multilineTextAlignment(.center)
             }
@@ -192,7 +306,7 @@ struct IncompleteView: View {
                     .padding(.horizontal, Spacing.xl)
                 }
 
-                Button("확인") {
+                Button("내일 또 만나요") {
                     Haptic.tap()
                     onDismiss()
                 }
@@ -202,7 +316,7 @@ struct IncompleteView: View {
             .padding(.bottom, Spacing.huge)
         }
         .onAppear {
-            Haptic.warning()
+            Haptic.medium()
             withAnimation { showContent = true }
         }
     }
