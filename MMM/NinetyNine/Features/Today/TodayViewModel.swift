@@ -29,6 +29,8 @@ final class TodayViewModel: ObservableObject {
     @Published var milestoneToShow: ItemType?        // 그룹 완료 축하 팝업
     @Published var showFirstSparkToast: Bool = false // Feature C: 첫 번째 항목 완료 토스트
     @Published var shouldNavigateToChallenge: Bool = false  // Feature O: 알람 해제 후 자동 챌린지 화면 이동
+    @Published var newlyEarnedBadges: [Badge] = []  // Feature G: 새로 획득한 뱃지 토스트 큐
+    @Published var badgeToastBadge: Badge? = nil    // Feature G: 현재 표시 중인 뱃지 토스트
 
     private var pendingFinish = false                // 마일스톤 닫힌 뒤 finishChallenge 예약
     private var hasStartedToday: Bool = false        // Feature C: 오늘 세션에서 첫 완료 여부
@@ -166,6 +168,30 @@ final class TodayViewModel: ObservableObject {
             UserDefaults.standard.set(streak, forKey: "currentStreak")
             analytics.log(.challengeCompleted(elapsedMinutes: elapsed / 60, streak: streak))
             analytics.checkStreakMilestone(streak: streak)
+
+            // Feature G: Evaluate badges after challenge completion
+            let allRecords = (try? await recordRepository?.getAllRecords()) ?? []
+            let newBadges = BadgeService.shared.evaluate(records: allRecords)
+            if !newBadges.isEmpty {
+                self.newlyEarnedBadges = newBadges
+                self.showNextBadgeToast()
+            }
+        }
+    }
+
+    // Feature G: Show badge toasts one at a time (queued)
+    private func showNextBadgeToast() {
+        guard !newlyEarnedBadges.isEmpty else {
+            badgeToastBadge = nil
+            return
+        }
+        let next = newlyEarnedBadges.removeFirst()
+        badgeToastBadge = next
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) { [weak self] in
+            self?.badgeToastBadge = nil
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self?.showNextBadgeToast()
+            }
         }
     }
 
