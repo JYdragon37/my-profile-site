@@ -1,0 +1,5 @@
+# 서비스 계정 키 파일
+NinetyNine/Resources/*.json
+!NinetyNine/Resources/GoogleService-Info.plist
+!NinetyNine/Resources/DefaultMotivation.json
+!NinetyNine/Resources/RoutineTemplates.json

@@ -1,0 +1,1302 @@
+{
+  "version": "3.0",
+  "lastUpdated": "2026-04-17T04:47:47.026Z",
+  "activeFeatures": [
+    "Today",
+    "Record",
+    "Onboarding",
+    "App",
+    "Settings",
+    "Repositories",
+    "Protocols",
+    "Alarm",
+    "tmp",
+    "Models",
+    "Services",
+    "Shared"
+  ],
+  "primaryFeature": "Today",
+  "features": {
+    "Today": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-16T02:17:16.605Z",
+        "lastUpdated": "2026-04-17T04:29:10.796Z"
+      },
+      "lastFile": "/Users/jeongyong/workspace/MMM/NinetyNine/Features/Today/TodayViewModel.swift",
+      "stateMachine": {
+        "currentState": "do",
+        "previousState": null,
+        "stateHistory": [],
+        "retryCount": 0,
+        "maxRetries": 5,
+        "circuitBreakerOpen": false
+      },
+      "metrics": {
+        "qualityScore": null,
+        "conventionCompliance": null,
+        "apiCompliance": null,
+        "cycleTimeMs": null,
+        "iterationEfficiency": null
+      },
+      "phaseTimestamps": {},
+      "automationLevel": 2
+    },
+    "Record": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-16T02:17:17.096Z",
+        "lastUpdated": "2026-04-17T04:28:53.476Z"
+      },
+      "lastFile": "/Users/jeongyong/workspace/MMM/NinetyNine/Features/Record/RecordView.swift"
+    },
+    "Onboarding": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-16T02:41:35.368Z",
+        "lastUpdated": "2026-04-17T04:47:40.161Z"
+      },
+      "lastFile": "/Users/jeongyong/workspace/MMM/NinetyNine/Features/Onboarding/OnboardingView.swift"
+    },
+    "App": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-16T02:44:30.509Z",
+        "lastUpdated": "2026-04-17T04:22:05.753Z"
+      },
+      "lastFile": "/Users/jeongyong/workspace/MMM/NinetyNine/App/NinetyNineApp.swift"
+    },
+    "Settings": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-16T02:49:52.264Z",
+        "lastUpdated": "2026-04-17T04:47:47.025Z"
+      },
+      "lastFile": "/Users/jeongyong/workspace/MMM/NinetyNine/Features/Settings/SettingsView.swift"
+    },
+    "Repositories": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-16T02:53:09.706Z",
+        "lastUpdated": "2026-04-16T02:53:36.649Z"
+      },
+      "lastFile": "/Users/jeongyong/workspace/MMM/NinetyNine/Core/Repositories/UserRepository.swift"
+    },
+    "Protocols": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-16T02:53:26.881Z",
+        "lastUpdated": "2026-04-16T02:53:26.881Z"
+      },
+      "lastFile": "/Users/jeongyong/workspace/MMM/NinetyNine/Core/Repositories/Protocols/RepositoryProtocols.swift"
+    },
+    "Alarm": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-16T03:31:55.037Z",
+        "lastUpdated": "2026-04-17T04:29:06.037Z"
+      },
+      "lastFile": "/Users/jeongyong/workspace/MMM/NinetyNine/Features/Alarm/AlarmFullscreenView.swift"
+    },
+    "tmp": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-16T04:35:44.112Z",
+        "lastUpdated": "2026-04-16T04:35:44.112Z"
+      },
+      "lastFile": "/tmp/update_ninety_nine_sheet.py"
+    },
+    "Models": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-16T04:48:09.652Z",
+        "lastUpdated": "2026-04-17T04:38:35.445Z"
+      },
+      "lastFile": "/Users/jeongyong/workspace/MMM/NinetyNine/Core/Models/Project.swift"
+    },
+    "Services": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-16T04:48:40.778Z",
+        "lastUpdated": "2026-04-17T04:31:19.771Z"
+      },
+      "lastFile": "/Users/jeongyong/workspace/MMM/NinetyNine/Core/Services/WeatherService.swift"
+    },
+    "Shared": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-16T05:19:28.365Z",
+        "lastUpdated": "2026-04-16T05:19:28.365Z"
+      },
+      "lastFile": "/Users/jeongyong/workspace/MMM/NinetyNine/Shared/DesignSystem.swift"
+    }
+  },
+  "pipeline": {
+    "currentPhase": 1,
+    "level": "Dynamic",
+    "phaseHistory": []
+  },
+  "session": {
+    "startedAt": "2026-04-16T02:17:16.605Z",
+    "onboardingCompleted": false,
+    "lastActivity": "2026-04-17T04:47:47.026Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-04-16T02:17:16.605Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T02:17:17.097Z",
+      "feature": "Record",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T02:17:22.502Z",
+      "feature": "Record",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T02:17:25.867Z",
+      "feature": "Record",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T02:17:33.065Z",
+      "feature": "Record",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T02:17:43.393Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T02:18:24.944Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T02:18:30.293Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T02:18:34.650Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T02:18:37.492Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T02:19:07.512Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T02:19:16.490Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T02:41:35.370Z",
+      "feature": "Onboarding",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T02:44:30.510Z",
+      "feature": "App",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T02:47:16.915Z",
+      "feature": "Onboarding",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T02:47:21.088Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T02:49:52.265Z",
+      "feature": "Settings",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T02:50:03.943Z",
+      "feature": "Settings",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T02:50:09.798Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T02:50:15.287Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T02:50:22.806Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T02:53:09.706Z",
+      "feature": "Repositories",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T02:53:14.210Z",
+      "feature": "Repositories",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T02:53:26.882Z",
+      "feature": "Protocols",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T02:53:36.650Z",
+      "feature": "Repositories",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T03:30:22.380Z",
+      "feature": "Onboarding",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T03:30:38.105Z",
+      "feature": "Onboarding",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T03:30:45.160Z",
+      "feature": "Onboarding",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T03:31:07.871Z",
+      "feature": "Onboarding",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T03:31:13.874Z",
+      "feature": "Onboarding",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T03:31:21.427Z",
+      "feature": "Onboarding",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T03:31:31.110Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T03:31:55.037Z",
+      "feature": "Alarm",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T03:32:42.174Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T04:35:44.113Z",
+      "feature": "tmp",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T04:48:09.652Z",
+      "feature": "Models",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T04:48:40.779Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T04:53:00.214Z",
+      "feature": "Models",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T04:53:30.815Z",
+      "feature": "Models",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T04:53:38.534Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T04:53:46.461Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T04:54:00.717Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T04:54:10.122Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T04:54:44.847Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T04:54:53.426Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T04:55:05.590Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T05:19:23.922Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T05:19:25.938Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T05:19:28.365Z",
+      "feature": "Shared",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T05:20:33.644Z",
+      "feature": "Record",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T05:20:34.091Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T05:20:36.694Z",
+      "feature": "Onboarding",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T05:20:38.763Z",
+      "feature": "Record",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T05:20:41.300Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T05:20:42.133Z",
+      "feature": "Record",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T05:20:48.494Z",
+      "feature": "Onboarding",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T05:21:12.105Z",
+      "feature": "Onboarding",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T05:21:15.546Z",
+      "feature": "Onboarding",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T05:21:22.710Z",
+      "feature": "Onboarding",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:13:51.922Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:14:06.060Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:16:12.891Z",
+      "feature": "Alarm",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:16:26.741Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:19:39.545Z",
+      "feature": "App",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:20:28.157Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:20:33.450Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:30:23.444Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:30:29.898Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:30:43.088Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:30:48.449Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:30:56.767Z",
+      "feature": "Settings",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:31:01.093Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:31:06.444Z",
+      "feature": "Settings",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:31:07.522Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:31:11.393Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:31:13.642Z",
+      "feature": "Settings",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:31:17.584Z",
+      "feature": "Settings",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:31:20.310Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:31:24.726Z",
+      "feature": "Settings",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:32:38.537Z",
+      "feature": "Settings",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:51:58.387Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:52:02.029Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:52:04.502Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:52:07.741Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:52:12.042Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:52:15.295Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:52:19.406Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T14:57:08.651Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T15:04:35.204Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T15:04:38.850Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T15:04:42.103Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T15:04:58.944Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T15:05:03.118Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T15:05:19.232Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T15:05:22.585Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T15:08:02.972Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T15:08:10.943Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T15:08:18.027Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T15:19:33.817Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T15:19:43.275Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T15:19:49.336Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T15:20:07.878Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T15:26:21.177Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T15:29:27.692Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T15:29:41.154Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T15:32:09.477Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T15:32:42.485Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T15:38:23.911Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T15:38:32.022Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T15:38:42.233Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-16T15:43:12.231Z",
+      "feature": "Settings",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T02:48:09.843Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T02:48:16.919Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T02:48:25.793Z",
+      "feature": "App",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T02:48:30.232Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T02:48:38.781Z",
+      "feature": "App",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:03:39.822Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:03:56.229Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:08:59.165Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:09:05.936Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:09:15.907Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:09:22.224Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:09:28.692Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:09:35.009Z",
+      "feature": "Models",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:14:32.278Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:14:40.579Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:20:45.349Z",
+      "feature": "App",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:20:49.608Z",
+      "feature": "Alarm",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:20:53.728Z",
+      "feature": "Alarm",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:21:05.587Z",
+      "feature": "Alarm",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:21:13.880Z",
+      "feature": "App",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:21:18.887Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:21:25.192Z",
+      "feature": "Alarm",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:21:31.679Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:21:37.810Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:21:53.709Z",
+      "feature": "Record",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:21:59.262Z",
+      "feature": "Record",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:22:05.754Z",
+      "feature": "App",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:22:13.086Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:22:22.357Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:22:34.911Z",
+      "feature": "Record",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:22:47.523Z",
+      "feature": "Record",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:22:51.805Z",
+      "feature": "Record",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:22:55.119Z",
+      "feature": "Record",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:23:00.091Z",
+      "feature": "Record",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:23:08.524Z",
+      "feature": "Record",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:25:26.408Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:25:32.184Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:25:38.954Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:25:49.554Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:25:56.766Z",
+      "feature": "Record",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:26:03.592Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:26:07.252Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:26:12.128Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:26:16.174Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:26:24.228Z",
+      "feature": "Record",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:26:41.885Z",
+      "feature": "Alarm",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:26:51.292Z",
+      "feature": "Onboarding",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:28:20.730Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:28:30.556Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:28:38.482Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:28:48.311Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:28:53.477Z",
+      "feature": "Record",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:28:58.194Z",
+      "feature": "Alarm",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:29:02.342Z",
+      "feature": "Alarm",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:29:06.037Z",
+      "feature": "Alarm",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:29:10.796Z",
+      "feature": "Today",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:30:46.471Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:30:56.703Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:31:02.983Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:31:19.772Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:38:16.150Z",
+      "feature": "Models",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:38:24.774Z",
+      "feature": "Models",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:38:35.446Z",
+      "feature": "Models",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:39:43.648Z",
+      "feature": "Settings",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:46:48.529Z",
+      "feature": "Settings",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:47:22.568Z",
+      "feature": "Onboarding",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:47:30.759Z",
+      "feature": "Onboarding",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:47:40.161Z",
+      "feature": "Onboarding",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-17T04:47:47.026Z",
+      "feature": "Settings",
+      "phase": "do",
+      "action": "updated"
+    }
+  ],
+  "stateMachine": {
+    "defaultWorkflow": "default",
+    "activeWorkflows": {},
+    "totalTransitions": 0
+  },
+  "automation": {
+    "globalLevel": 2,
+    "trustScore": 40,
+    "pendingApprovals": 0,
+    "lastGateResult": null
+  },
+  "team": {
+    "enabled": true,
+    "stateFile": ".bkit/runtime/agent-state.json",
+    "eventsFile": ".bkit/runtime/agent-events.jsonl"
+  }
+}

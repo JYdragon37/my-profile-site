@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  ⚠️  이 파일은 템플릿입니다.
+  Firebase Console > 프로젝트 설정 > iOS 앱 > GoogleService-Info.plist 를 다운로드해서
+  이 파일을 대체하세요. 파일명은 반드시 "GoogleService-Info.plist" 이어야 합니다.
+
+  설정 순서:
+  1. console.firebase.google.com 접속
+  2. 새 프로젝트 생성 (예: ninety-nine-app)
+  3. iOS 앱 추가 → Bundle ID 입력 (예: com.yourname.ninetynine)
+  4. GoogleService-Info.plist 다운로드
+  5. Xcode 프로젝트 루트에 추가 (Copy items 체크)
+  6. Config.swift의 firebaseStorageBucket 값 업데이트
+-->
+<plist version="1.0">
+<dict>
+  <key>CLIENT_ID</key>
+  <string>YOUR_CLIENT_ID</string>
+  <key>REVERSED_CLIENT_ID</key>
+  <string>YOUR_REVERSED_CLIENT_ID</string>
+  <key>API_KEY</key>
+  <string>YOUR_API_KEY</string>
+  <key>GCM_SENDER_ID</key>
+  <string>YOUR_GCM_SENDER_ID</string>
+  <key>PLIST_VERSION</key>
+  <string>1</string>
+  <key>BUNDLE_ID</key>
+  <string>com.yourname.ninetynine</string>
+  <key>PROJECT_ID</key>
+  <string>YOUR_FIREBASE_PROJECT_ID</string>
+  <key>STORAGE_BUCKET</key>
+  <string>YOUR_PROJECT_ID.appspot.com</string>
+  <key>IS_ADS_ENABLED</key>
+  <false/>
+  <key>IS_ANALYTICS_ENABLED</key>
+  <true/>
+  <key>IS_APPINVITE_ENABLED</key>
+  <false/>
+  <key>IS_GCM_ENABLED</key>
+  <true/>
+  <key>IS_SIGNIN_ENABLED</key>
+  <true/>
+  <key>GOOGLE_APP_ID</key>
+  <string>YOUR_GOOGLE_APP_ID</string>
+</dict>
+</plist>
